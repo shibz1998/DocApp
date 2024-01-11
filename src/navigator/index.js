@@ -22,6 +22,13 @@ const DocBottomDrawer = () => {
   return (
     <Tab.Navigator initialRouteName="DocDashboardScreen">
       <Tab.Screen name="DocDashboardScreen" component={DocDashboardScreen} />
+    </Tab.Navigator>
+  );
+};
+
+const PatientBottomDrawer = () => {
+  return (
+    <Tab.Navigator initialRouteName="PatientDashboardScreen">
       <Tab.Screen
         name="PatientDashboardScreen"
         component={PatientDashboardScreen}
@@ -37,21 +44,21 @@ const DoctorStack = () => (
 );
 
 const PatientStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="PatientDashboardScreen"
-      component={PatientDashboardScreen}
-    />
-    {/* <Stack.Screen name="OtherPatientScreen" component={OtherPatientScreen} /> */}
-  </Stack.Navigator>
+  <Stack.Group screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="PatientBottomDrawer" component={PatientBottomDrawer} />
+  </Stack.Group>
 );
 
 export default function Navigator() {
-  const isUserLoggedIn = true; // Replace this with your actual authentication logic
-
+  const isUserLoggedIn = true;
+  const userType = "patient";
   return (
     <Stack.Navigator screenOptions={{ headerShown: true }}>
-      {isUserLoggedIn ? DoctorStack() : AuthStack()}
+      {isUserLoggedIn
+        ? userType === "doctor"
+          ? DoctorStack()
+          : PatientStack()
+        : AuthStack()}
     </Stack.Navigator>
   );
 }
