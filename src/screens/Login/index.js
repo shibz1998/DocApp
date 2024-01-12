@@ -32,6 +32,7 @@ export default function Login(props) {
 
       // Successfully logged in
       console.log("User logged in successfully");
+      Alert.alert("User logged in successfully");
     } catch (error) {
       // Handle login errors
       console.error("Login Error: ", error.message);
