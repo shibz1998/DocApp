@@ -14,14 +14,22 @@ const Stack = createNativeStackNavigator();
 const AuthStack = () => (
   <Stack.Group>
     <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen
+      name="SignUp"
+      component={SignUp}
+      options={{ title: "Sign Up" }}
+    />
   </Stack.Group>
 );
 
 const DocBottomDrawer = () => {
   return (
     <Tab.Navigator initialRouteName="DocDashboardScreen">
-      <Tab.Screen name="DocDashboardScreen" component={DocDashboardScreen} />
+      <Tab.Screen
+        name="DocDashboardScreen"
+        component={DocDashboardScreen}
+        options={{ title: "Dashboard" }}
+      />
     </Tab.Navigator>
   );
 };
@@ -32,6 +40,7 @@ const PatientBottomDrawer = () => {
       <Tab.Screen
         name="PatientDashboardScreen"
         component={PatientDashboardScreen}
+        options={{ title: "Dashboard" }}
       />
     </Tab.Navigator>
   );
@@ -50,8 +59,8 @@ const PatientStack = () => (
 );
 
 export default function Navigator() {
-  const isUserLoggedIn = true;
-  const userType = "patient";
+  const isUserLoggedIn = false;
+  const userType = "doctor";
   return (
     <Stack.Navigator screenOptions={{ headerShown: true }}>
       {isUserLoggedIn
