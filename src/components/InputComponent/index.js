@@ -1,6 +1,6 @@
-import {View, Text, TextInput, StyleSheet} from 'react-native';
-import React from 'react';
-import {Controller} from 'react-hook-form';
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import React from "react";
+import { Controller } from "react-hook-form";
 
 export default function InputComponent({
   error,
@@ -18,8 +18,11 @@ export default function InputComponent({
       <Controller
         name={name}
         control={control}
-        rules={{required: true, validate: true}}
-        render={({field: {value, onChange}}) => {
+        rules={{
+          required: { value: true, message: `${name} is required` },
+          validate: true,
+        }}
+        render={({ field: { value, onChange }, fieldState }) => {
           return (
             <TextInput
               style={[styles.input, style]}
@@ -28,16 +31,13 @@ export default function InputComponent({
               onChangeText={onChange}
               autoCapitalize={autoCapitalize}
               secureTextEntry={secureTextEntry}
-              placeholderTextColor="black"
+              placeholderTextColor="grey"
               testID={testID}
             />
           );
         }}
       />
-
-      {error && error?.message.length > 0 && (
-        <Text style={styles.errorStyle}>{`*${error.message}`}</Text>
-      )}
+      {error && <Text style={styles.errorStyle}>{`*${error.message}`}</Text>}
     </View>
   );
 }
@@ -48,17 +48,16 @@ const styles = StyleSheet.create({
   },
   input: {
     // backgroundColor: '#eecb9a',
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
-    padding: 10,
+    padding: 8,
     marginHorizontal: 10,
-    // backgroundColor: 'yellow',
     width: 250,
   },
 
   errorStyle: {
     marginHorizontal: 10,
-    marginTop: 5,
-    color: 'red',
+    marginTop: 3,
+    color: "red",
   },
 });

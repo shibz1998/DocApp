@@ -62,7 +62,7 @@ export default function Navigator() {
   const isUserLoggedIn = false;
   const userType = "doctor";
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isUserLoggedIn
         ? userType === "doctor"
           ? DoctorStack()
