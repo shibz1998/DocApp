@@ -186,8 +186,12 @@ import {
 } from "react-native";
 
 import React, { useState } from "react";
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+
+// import firestore from "@react-native-firebase/firestore";
+
 import styles from "../../styles/AuthStyles";
 
 import InputComponent from "../../components/InputComponent";
@@ -208,10 +212,24 @@ export default function SignUp(props) {
   const onSubmit = (data) => {
     const { Email, Password, Name, Contact, Location, Specialty } = data;
 
-    if (userType != null) {
+    if (userType !== null) {
       createUserWithEmailAndPassword(auth, Email, Password)
-        .then((user) => {
+        .then(async (user) => {
           console.log(user.user.uid);
+
+          const collectionName = "UserProfile";
+
+          try {
+            await addDoc(collection(FIRESTORE_DB, collectionName), {
+              userId: user.user.uid,
+              name: Name,
+            });
+
+            console.log("Place added to Firestore successfully!");
+            Alert.alert("Place Added successfully!");
+          } catch (error) {
+            console.error("Error adding userProfile to Firestore:", error);
+          }
         })
         .catch((err) => {
           console.log(err.message);
@@ -219,27 +237,26 @@ export default function SignUp(props) {
     } else {
       Alert.alert("Please Select The Account Type");
     }
-
-    // try{
-    //   if(userType!=null){
-    //     await createUserWithEmailAndPassword(auth, email, password);
-    //     Alert.alert("Success", "Account created successfully!");
-    //   }
-
-    // }catch(error){
-
-    // }
-
-    // if (userType === "doctor") {
-    // } else if (userType === "patient") {
-    // }
-
-    // if (userType == "patient") {
-    //   Alert.alert(userType);
-    // }
-
-    // reset();
   };
+  // try{
+  //   if(userType!=null){
+  //     await createUserWithEmailAndPassword(auth, email, password);
+  //     Alert.alert("Success", "Account created successfully!");
+  //   }
+
+  // }catch(error){
+
+  // }
+
+  // if (userType === "doctor") {
+  // } else if (userType === "patient") {
+  // }
+
+  // if (userType == "patient") {
+  //   Alert.alert(userType);
+  // }
+
+  // reset();
 
   const handleSignUp = async () => {
     try {
