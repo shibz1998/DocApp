@@ -14,6 +14,7 @@ import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login(props) {
+  console.log("Login Page Rendering");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

@@ -41,10 +41,9 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#e4ede7",
-
     alignItems: "center",
     borderRadius: 10,
-    padding: 20,
+    padding: 10,
     marginBottom: 10,
     shadowColor: "#000",
     shadowOffset: {

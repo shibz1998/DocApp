@@ -194,25 +194,52 @@ import InputComponent from "../../components/InputComponent";
 import { useForm, FieldValues } from "react-hook-form";
 
 export default function SignUp(props) {
+  console.log("Sign Up page rendering");
+
+  const auth = FIREBASE_AUTH;
+  const [userType, setUserType] = useState(null);
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    Alert.alert("Submitted Data", JSON.stringify(data, null, 2));
+    const { Email, Password, Name, Contact, Location, Specialty } = data;
+
+    if (userType != null) {
+      createUserWithEmailAndPassword(auth, Email, Password)
+        .then((user) => {
+          console.log(user.user.uid);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      Alert.alert("Please Select The Account Type");
+    }
+
+    // try{
+    //   if(userType!=null){
+    //     await createUserWithEmailAndPassword(auth, email, password);
+    //     Alert.alert("Success", "Account created successfully!");
+    //   }
+
+    // }catch(error){
+
+    // }
+
+    // if (userType === "doctor") {
+    // } else if (userType === "patient") {
+    // }
+
+    // if (userType == "patient") {
+    //   Alert.alert(userType);
+    // }
+
+    // reset();
   };
-
-  const [userType, setUserType] = useState(null);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
-  // const [contact, setContact] = useState("");
-  // const [specialty, setSpecialty] = useState("");
-  // const [location, setLocation] = useState("");
-
-  const auth = FIREBASE_AUTH;
 
   const handleSignUp = async () => {
     try {
@@ -242,9 +269,9 @@ export default function SignUp(props) {
           resizeMode="contain"
         />
 
-        <Text style={styles.title}>Register</Text>
+        <Text style={[styles.title, { fontSize: 20 }]}>Register</Text>
 
-        <Text>Choose User Type:</Text>
+        <Text>Choose Account Type:</Text>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
             style={
