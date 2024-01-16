@@ -187,7 +187,7 @@ import {
 
 import React, { useState } from "react";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 
 // import firestore from "@react-native-firebase/firestore";
@@ -214,21 +214,42 @@ export default function SignUp(props) {
 
     if (userType !== null) {
       createUserWithEmailAndPassword(auth, Email, Password)
-        .then(async (user) => {
-          console.log(user.user.uid);
+        .then(async (userCredential) => {
+          const user = userCredential.user;
 
+          await updateProfile(user, {
+            displayName: JSON.stringify({ userType: userType }),
+          });
+          console.log(user.uid);
           const collectionName = "UserProfile";
 
           try {
-            await addDoc(collection(FIRESTORE_DB, collectionName), {
-              userId: user.user.uid,
+            let userProfileData = {
+              userId: userCredential.user.uid,
+              email: Email,
+              password: Password,
               name: Name,
-            });
+              contact: Contact,
+              userType: userType,
+            };
 
-            console.log("Place added to Firestore successfully!");
-            Alert.alert("Place Added successfully!");
+            if (userType === "doctor") {
+              userProfileData = {
+                ...userProfileData, // Spread existing properties
+                location: Location,
+                speciality: Specialty,
+              };
+            }
+
+            await addDoc(
+              collection(FIRESTORE_DB, collectionName),
+              userProfileData
+            );
+
+            console.log("User profile added to Firestore successfully!");
+            Alert.alert("User profile added successfully!");
           } catch (error) {
-            console.error("Error adding userProfile to Firestore:", error);
+            console.error("Error adding user profile to Firestore:", error);
           }
         })
         .catch((err) => {
@@ -238,6 +259,7 @@ export default function SignUp(props) {
       Alert.alert("Please Select The Account Type");
     }
   };
+
   // try{
   //   if(userType!=null){
   //     await createUserWithEmailAndPassword(auth, email, password);

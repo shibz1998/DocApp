@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   Login,
   SignUp,
   DocDashboardScreen,
   PatientDashboardScreen,
 } from "../screens";
+
+import { FIREBASE_AUTH } from "../../FirebaseConfig";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,8 +62,41 @@ const PatientStack = () => (
 );
 
 export default function Navigator() {
-  const isUserLoggedIn = false;
-  const userType = "doctor";
+  console.log("NAV SCREEN RENDERING");
+
+  const auth = FIREBASE_AUTH;
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [userType, setUserType] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in
+        setIsUserLoggedIn(true);
+        console.log("User" + user);
+        const displayName = user.displayName;
+        if (displayName) {
+          const { userType } = JSON.parse(displayName);
+          setUserType(userType || "");
+
+          console.log(userType);
+        } else {
+          setUserType("");
+        }
+      } else {
+        // User is not logged in
+        setIsUserLoggedIn(false);
+        setUserType("");
+      }
+    });
+
+    // Cleanup subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  // const isUserLoggedIn = false;
+  // const userType = "doctor";
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isUserLoggedIn

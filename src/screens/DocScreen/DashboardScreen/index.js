@@ -5,14 +5,30 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  Button,
 } from "react-native";
+
 import React, { useState } from "react";
-// import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { signOut } from "firebase/auth";
+import { FIREBASE_AUTH } from "../../../../FirebaseConfig";
 
 export default function DashboardScreen(props) {
+  const auth = FIREBASE_AUTH;
   return (
     <View style={styles.container}>
       <Text>Doctor Dashboard Screen</Text>
+
+      <Button
+        title="LOG OUT"
+        onPress={async () => {
+          try {
+            await signOut(auth);
+            console.log("User signed out successfully!");
+          } catch (error) {
+            console.error("Error signing out:", error.message);
+          }
+        }}
+      />
     </View>
   );
 }
