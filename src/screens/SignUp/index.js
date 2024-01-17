@@ -27,7 +27,7 @@ export default function SignUp(props) {
   console.log("Sign Up page rendering");
 
   const auth = FIREBASE_AUTH;
-  const [userType, setUserType] = useState(null);
+  const [userType, setUserType] = useState("patient");
   const {
     control,
     handleSubmit,
@@ -47,9 +47,9 @@ export default function SignUp(props) {
             displayName: userType,
           });
 
-          await setUserTypeContext(userType);
+          setUserTypeContext(userType);
 
-          await setUserIDContext(user.uid);
+          // setUserIDContext(user.uid);
           console.log(user.uid);
 
           const collectionName = "UserProfile";
