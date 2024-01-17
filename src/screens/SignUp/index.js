@@ -15,8 +15,6 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import { useUserContext } from "../../UserContext";
 
-// import firestore from "@react-native-firebase/firestore";
-
 import styles from "../../styles/AuthStyles";
 
 import InputComponent from "../../components/InputComponent";
