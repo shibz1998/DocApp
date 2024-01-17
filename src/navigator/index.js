@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged } from "firebase/auth";
-
 import { useUserContext } from "../UserContext";
 import {
   Login,
@@ -37,6 +36,23 @@ const DocBottomDrawer = () => {
         component={DocDashboardScreen}
         options={{ title: "Dashboard" }}
       />
+
+      <Tab.Screen
+        name="PatientDashboardScreen"
+        component={PatientDashboardScreen}
+        options={{ title: "Dashboard" }}
+      />
+      {/* <Tab.Screen
+        name="DocUpcomingAppointments"
+        component={DocUpcomingAppointments}
+        options={{ title: "Upcoming Appointsment" }}
+      />
+
+      <Tab.Screen
+        name="DocUpcomingAppointments"
+        component={DocUpcomingAppointments}
+        options={{ title: "Manage Appointsment" }}
+      /> */}
     </Tab.Navigator>
   );
 };
@@ -44,6 +60,11 @@ const DocBottomDrawer = () => {
 const PatientBottomDrawer = () => {
   return (
     <Tab.Navigator initialRouteName="PatientDashboardScreen">
+      <Tab.Screen
+        name="DocDashboardScreen"
+        component={DocDashboardScreen}
+        options={{ title: "Dashboard" }}
+      />
       <Tab.Screen
         name="PatientDashboardScreen"
         component={PatientDashboardScreen}
