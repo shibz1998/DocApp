@@ -56,6 +56,8 @@ const PatientBottomDrawer = () => {
 export default function Navigator() {
   const { userType, setUserTypeContext } = useUserContext();
   console.log("NAV SCREEN RENDERING");
+  // console.log("UserType:: " + userType);
+  console.log("UserType");
 
   const auth = FIREBASE_AUTH;
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
