@@ -16,16 +16,18 @@ import { FIREBASE_AUTH } from "../../FirebaseConfig";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const AuthStack = () => (
-  <Stack.Group>
-    <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen
-      name="SignUp"
-      component={SignUp}
-      options={{ title: "Sign Up" }}
-    />
-  </Stack.Group>
-);
+const AuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ title: "Sign Up" }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const DocBottomDrawer = () => {
   return (
@@ -51,25 +53,12 @@ const PatientBottomDrawer = () => {
   );
 };
 
-const DoctorStack = () => (
-  <Stack.Group screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="DocBottomDrawer" component={DocBottomDrawer} />
-  </Stack.Group>
-);
-
-const PatientStack = () => (
-  <Stack.Group screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="PatientBottomDrawer" component={PatientBottomDrawer} />
-  </Stack.Group>
-);
-
 export default function Navigator() {
   const { userType, setUserTypeContext } = useUserContext();
   console.log("NAV SCREEN RENDERING");
 
   const auth = FIREBASE_AUTH;
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  // const [userType, setUserType] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -88,26 +77,17 @@ export default function Navigator() {
           setUserTypeContext("");
         }
       } else {
-        // User is not logged in
         setIsUserLoggedIn(false);
         setUserTypeContext("");
       }
     });
 
-    // Cleanup subscription when the component unmounts
     return () => unsubscribe();
   }, []);
 
-  // const isUserLoggedIn = false;
-  // const userType = "doctor";
-
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {isUserLoggedIn
-        ? userType === "doctor"
-          ? DoctorStack()
-          : PatientStack()
-        : AuthStack()}
-    </Stack.Navigator>
-  );
+  return isUserLoggedIn
+    ? userType === "doctor"
+      ? DocBottomDrawer()
+      : PatientBottomDrawer()
+    : AuthStack();
 }
