@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged } from "firebase/auth";
+
+import { useUserContext } from "../UserContext";
 import {
   Login,
   SignUp,
@@ -62,31 +64,33 @@ const PatientStack = () => (
 );
 
 export default function Navigator() {
+  const { userType, setUserTypeContext } = useUserContext();
   console.log("NAV SCREEN RENDERING");
 
   const auth = FIREBASE_AUTH;
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const [userType, setUserType] = useState("");
+  // const [userType, setUserType] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is logged in
         setIsUserLoggedIn(true);
-        console.log("User" + user);
+        console.log("User", JSON.stringify(user));
         const displayName = user.displayName;
-        if (displayName) {
-          const { userType } = JSON.parse(displayName);
-          setUserType(userType || "");
 
-          console.log(userType);
+        console.log(displayName);
+        if (displayName) {
+          setUserTypeContext(displayName || "");
+
+          console.log(displayName);
         } else {
-          setUserType("");
+          setUserTypeContext("");
         }
       } else {
         // User is not logged in
         setIsUserLoggedIn(false);
-        setUserType("");
+        setUserTypeContext("");
       }
     });
 

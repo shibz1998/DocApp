@@ -189,6 +189,7 @@ import React, { useState } from "react";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
+import { useUserContext } from "../../UserContext";
 
 // import firestore from "@react-native-firebase/firestore";
 
@@ -198,6 +199,7 @@ import InputComponent from "../../components/InputComponent";
 import { useForm, FieldValues } from "react-hook-form";
 
 export default function SignUp(props) {
+  const { setUserTypeContext, setUserIDContext } = useUserContext();
   console.log("Sign Up page rendering");
 
   const auth = FIREBASE_AUTH;
@@ -218,9 +220,14 @@ export default function SignUp(props) {
           const user = userCredential.user;
 
           await updateProfile(user, {
-            displayName: JSON.stringify({ userType: userType }),
+            displayName: userType,
           });
+
+          await setUserTypeContext(userType);
+
+          await setUserIDContext(user.uid);
           console.log(user.uid);
+
           const collectionName = "UserProfile";
 
           try {

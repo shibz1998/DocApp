@@ -5,6 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import Navigator from "./src/navigator";
 
+import { UserProvider } from "./src/UserContext";
+
 export default function App() {
   return (
     // <NavigationContainer>
@@ -13,9 +15,10 @@ export default function App() {
     //     <Stack.Screen name="SignUp" component={SignUp}></Stack.Screen>
     //   </Stack.Navigator>
     // </NavigationContainer>
-
-    <NavigationContainer>
-      <Navigator />
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
+    </UserProvider>
   );
 }
