@@ -4,7 +4,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile,
   onAuthStateChanged,
 } from "firebase/auth";
 
@@ -34,6 +33,7 @@ export const useFirebaseAuth = () => {
   }, []);
 
   return {
+    setCurrentUser,
     currentUser,
     loading,
     signUp,

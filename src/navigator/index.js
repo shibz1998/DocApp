@@ -181,16 +181,15 @@ export default function Navigator() {
   const [error, setError] = useState(null);
 
   console.log("NAV SCREEN RENDERING");
-  // console.log("UserType:: " + userType);
-  console.log("UserType");
+  console.log("UserType:: " + userType);
 
   // const auth = FIREBASE_AUTH;
-  // const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  // const [isUserLoggedIn, setIsUserLoggedIn] = useState(currentUser);
   const isUserLoggedIn = currentUser != null;
 
   useEffect(() => {
     if (currentUser) {
-      console.log("User --------", currentUser.uid); //JSON.stringify(currentUser.uid)
+      console.log("User For  --------", currentUser.uid); //JSON.stringify(currentUser.uid)
       // setUserTypeContext(userType);
 
       const collectionName = "UserProfile";
@@ -204,14 +203,32 @@ export default function Navigator() {
       return () => unsubscribe();
     } else {
       setUserTypeContext("");
+      console.log("Current user set to " + currentUser);
+      // setIsUserLoggedIn(false);
     }
   }, [currentUser, setUserTypeContext]);
 
-  return isUserLoggedIn
-    ? userType === "doctor"
-      ? DocBottomDrawer()
-      : userType === "patient"
-      ? PatientBottomDrawer()
-      : AuthStack()
-    : AuthStack();
+  if (!currentUser) {
+    return <AuthStack />;
+  } else if (userType === "doctor") {
+    return <DocBottomDrawer />;
+  } else if (userType === "patient") {
+    return <PatientBottomDrawer />;
+  } else {
+    return <AuthStack />;
+  }
+
+  // return isUserLoggedIn && userType === "doctor"
+  //   ? DocBottomDrawer()
+  //   : AuthStack() || (isUserLoggedIn && userType === "patient")
+  //   ? PatientBottomDrawer()
+  //   : AuthStack();
+
+  //isUserLoggedIn
+  // ? userType === "doctor"
+  //   ? DocBottomDrawer()
+  //   : userType === "patient"
+  //   ? PatientBottomDrawer()
+  //   : AuthStack()
+  // : AuthStack();
 }
