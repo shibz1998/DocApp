@@ -228,24 +228,24 @@ export default function SignUp(props) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const { Email, Password, Name, Contact, Location, Specialty } = data;
+    const { email, password, name, contact, location, speciality } = data;
 
     if (userType) {
       try {
-        const userCredential = await signUp(Email, Password);
+        const userCredential = await signUp(email, password);
         const user = userCredential.user;
         setUserTypeContext(userType);
         console.log(user.uid); // Logging for verification
 
         const userProfileData = {
           userId: user.uid,
-          email: Email,
-          name: Name,
-          contact: Contact,
-          userType: userType,
+          email,
+          name,
+          contact,
+          userType,
           ...(userType === "doctor" && {
-            location: Location,
-            speciality: Specialty,
+            location,
+            speciality,
           }),
         };
         await addDocument("UserProfile", userProfileData);
@@ -297,16 +297,16 @@ export default function SignUp(props) {
         <InputComponent
           control={control}
           placeholder={"Email"}
-          name="Email"
-          error={errors?.Email}
+          name="email"
+          error={errors?.email}
           autoCapitalize="none"
         />
 
         <InputComponent
           control={control}
           placeholder={"Password"}
-          name="Password"
-          error={errors?.Password}
+          name="password"
+          error={errors?.password}
           autoCapitalize="none"
           secureTextEntry={true}
         />
@@ -314,16 +314,16 @@ export default function SignUp(props) {
         <InputComponent
           control={control}
           placeholder={"Name"}
-          name="Name"
-          error={errors?.Name}
+          name="name"
+          error={errors?.name}
           autoCapitalize="none"
         />
 
         <InputComponent
           control={control}
           placeholder={"Contact Number"}
-          name="Contact"
-          error={errors?.Contact}
+          name="contact"
+          error={errors?.contact}
           autoCapitalize="none"
         />
 
@@ -331,17 +331,17 @@ export default function SignUp(props) {
           <>
             <InputComponent
               control={control}
-              placeholder={"Specialty"}
-              name="Specialty"
-              error={errors?.Specialty}
+              placeholder={"Speciality"}
+              name="speciality"
+              error={errors?.speciality}
               autoCapitalize="none"
             />
 
             <InputComponent
               control={control}
               placeholder={"Location"}
-              name="Location"
-              error={errors?.Location}
+              name="location"
+              error={errors?.location}
               autoCapitalize="none"
             />
           </>
