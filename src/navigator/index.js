@@ -210,6 +210,8 @@ export default function Navigator() {
   return isUserLoggedIn
     ? userType === "doctor"
       ? DocBottomDrawer()
-      : PatientBottomDrawer()
+      : userType === "patient"
+      ? PatientBottomDrawer()
+      : AuthStack()
     : AuthStack();
 }
