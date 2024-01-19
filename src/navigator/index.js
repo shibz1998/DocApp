@@ -206,9 +206,9 @@ export default function Navigator() {
       console.log("Current user set to " + currentUser);
       // setIsUserLoggedIn(false);
     }
-  }, [currentUser, setUserTypeContext]);
+  }, [currentUser]);
 
-  if (!currentUser) {
+  if (!isUserLoggedIn) {
     return <AuthStack />;
   } else if (userType === "doctor") {
     return <DocBottomDrawer />;

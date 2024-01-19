@@ -93,7 +93,7 @@ export default function DashboardScreen(props) {
     } else {
       console.log("error");
     }
-  }, [currentUser]);
+  }, []);
 
   const handleLogout = async () => {
     try {
