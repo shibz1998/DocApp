@@ -36,12 +36,6 @@ const DocBottomDrawer = () => {
         component={DocDashboardScreen}
         options={{ title: "Dashboard" }}
       />
-
-      <Tab.Screen
-        name="PatientDashboardScreen"
-        component={PatientDashboardScreen}
-        options={{ title: "Dashboard" }}
-      />
       {/* <Tab.Screen
         name="DocUpcomingAppointments"
         component={DocUpcomingAppointments}
@@ -60,11 +54,6 @@ const DocBottomDrawer = () => {
 const PatientBottomDrawer = () => {
   return (
     <Tab.Navigator initialRouteName="PatientDashboardScreen">
-      <Tab.Screen
-        name="DocDashboardScreen"
-        component={DocDashboardScreen}
-        options={{ title: "Dashboard" }}
-      />
       <Tab.Screen
         name="PatientDashboardScreen"
         component={PatientDashboardScreen}
