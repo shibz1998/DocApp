@@ -75,6 +75,7 @@ import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
 
 export default function DashboardScreen(props) {
+  console.log("Patient Dashboard Running");
   const { currentUser, signOutUser } = useFirebaseAuth();
   const { listenToDocument } = useFirestore();
   const [userData, setUserData] = useState(null);
@@ -85,7 +86,7 @@ export default function DashboardScreen(props) {
       const unsubscribe = listenToDocument(
         collectionName,
         currentUser.uid,
-        (docs) => setUserData(docs),
+        (docs) => setUserData(docs[0]),
         (error) => setError(error)
       );
 
@@ -93,7 +94,7 @@ export default function DashboardScreen(props) {
     } else {
       console.log("error");
     }
-  }, []);
+  }, [currentUser]);
 
   const handleLogout = async () => {
     try {
@@ -113,6 +114,9 @@ export default function DashboardScreen(props) {
       {userData && (
         <View>
           <Text>Name: {userData.name}</Text>
+          <Text>contact: {userData.contact}</Text>
+          <Text>User Type: {userData.userType}</Text>
+          <Text>Name: {userData.email}</Text>
           {/* Render other user data fields as needed */}
         </View>
       )}
