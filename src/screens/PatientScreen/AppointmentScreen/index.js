@@ -74,13 +74,13 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
-import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
 
 export default function AppointmentScreen(props) {
-  const { currentUser, signOutUser } = useFirebaseAuth();
   const { listenToDoctorProfiles } = useFirestore();
+
   const [doctors, setDoctors] = useState([]);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [customMessage, setCustomMessage] = useState("");
@@ -107,20 +107,27 @@ export default function AppointmentScreen(props) {
     // Implement the logic to save the appointment request to Firebase
     setModalVisible(false);
   };
+  console.log("-------->");
+  console.log(doctors);
 
   const renderDoctor = ({ item }) => (
-    <View style={styles.card}>
-      <Text>Name: {item.name}</Text>
-      <Button
-        title="Request Appointment"
-        onPress={() => handleRequestAppointment(item)}
-      />
+    <View style={[styles.card, { flexDirection: "row" }]}>
+      <View>
+        <Text>Name: {item.name}</Text>
+        <Text>location: {item.location}</Text>
+        <Text>Speciality: {item.speciality}</Text>
+      </View>
+      <View style={{ justifyContent: "center" }}>
+        <Button
+          title="Request Appointment"
+          onPress={() => handleRequestAppointment(item)}
+        />
+      </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text>Patient - Dashboard Screen</Text>
       <FlatList
         data={doctors}
         renderItem={renderDoctor}
@@ -157,8 +164,6 @@ export default function AppointmentScreen(props) {
           <Button title="Submit Request" onPress={submitAppointmentRequest} />
         </View>
       </Modal>
-
-      <Button title="LOG OUT" onPress={signOutUser} />
     </View>
   );
 }
