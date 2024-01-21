@@ -1,74 +1,4 @@
-// import {
-//   StyleSheet,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   View,
-//   Button,
-//   Alert,
-// } from "react-native";
-// import React, { useState } from "react";
-// import { signOut } from "firebase/auth";
-// import { FIREBASE_AUTH } from "../../../../FirebaseConfig";
-
-// import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
-
-// export default function DashboardScreen(props) {
-//   const { signOutUser } = useFirebaseAuth();
-
-//   const auth = FIREBASE_AUTH;
-//   return (
-//     <View style={styles.container}>
-//       <Text>Patient - Dashboard Screen</Text>
-
-//       {/* <Button
-//         title="LOG OUT"
-//         onPress={async () => {
-//           try {
-//             await signOut(auth);
-//             // setCurrentUser(null);
-//             console.log("User signed out successfully!");
-//           } catch (error) {
-//             console.error("Error signing out:", error.message);
-//           }
-//         }}
-//       /> */}
-
-//       <Button
-//         title="LOG OUT"
-//         onPress={async () => {
-//           try {
-//             await signOutUser();
-
-//             console.log("User signed out successfully -----");
-//             // Additional logic after sign out (e.g., redirecting to login page)
-//           } catch (error) {
-//             console.error("Error signing out:", error);
-//           }
-//         }}
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
-
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Button,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 
 import React, { useState, useEffect } from "react";
 import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
@@ -117,7 +47,6 @@ export default function DashboardScreen(props) {
           <Text>contact: {userData.contact}</Text>
           <Text>User Type: {userData.userType}</Text>
           <Text>Name: {userData.email}</Text>
-          {/* Render other user data fields as needed */}
         </View>
       )}
       <Button title="LOG OUT" onPress={handleLogout} />
