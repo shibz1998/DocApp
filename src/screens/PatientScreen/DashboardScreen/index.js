@@ -14,23 +14,6 @@ export default function DashboardScreen(props) {
 
   const { userID } = useUserContext();
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     console.log(currentUser.uid);
-  //     const collectionName = "UserProfile";
-  //     const unsubscribe = listenToDocument(
-  //       collectionName,
-  //       currentUser.uid,
-  //       (docs) => setUserData(docs[0]),
-  //       (error) => setError(error)
-  //     );
-
-  //     return () => unsubscribe();
-  //   } else {
-  //     console.log("error");
-  //   }
-  // }, [currentUser]);
-
   useEffect(() => {
     const collectionName = "UserProfile";
     const filterField = "userId";

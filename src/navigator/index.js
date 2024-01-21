@@ -10,14 +10,12 @@ import {
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
 } from "../screens";
-
+import LogoutComponent from "../components/LogoutComponent";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { useFirestore } from "../hooks/useFirestore";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-const Placeholder = () => null;
 
 const AuthStack = () => {
   return (
@@ -51,21 +49,16 @@ const DocBottomDrawer = () => {
         component={DocUpcomingAppointments}
         options={{ title: "Manage Appointsment" }}
       /> */}
+      <Tab.Screen
+        name="Logout"
+        component={LogoutComponent}
+        options={{ title: "Logout" }}
+      />
     </Tab.Navigator>
   );
 };
 
 const PatientBottomDrawer = () => {
-  const { signOutUser } = useFirebaseAuth();
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-      console.log("User signed out successfully");
-      // Additional logic after logout (like navigating to a login screen)
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
   return (
     <Tab.Navigator initialRouteName="PatientDashboardScreen">
       <Tab.Screen
@@ -85,14 +78,7 @@ const PatientBottomDrawer = () => {
       />
       <Tab.Screen
         name="Logout"
-        component={Placeholder}
-        listeners={{
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-            handleLogout();
-          },
-        }}
+        component={LogoutComponent}
         options={{ title: "Logout" }}
       />
     </Tab.Navigator>
@@ -108,7 +94,7 @@ export default function Navigator() {
 
   useEffect(() => {
     if (currentUser) {
-      console.log("User For  --------", currentUser.uid); //JSON.stringify(currentUser.uid)
+      console.log("User ID  --------", currentUser.uid);
       setUserIDContext(currentUser.uid);
       const collectionName = "UserProfile";
       const filterField = "userId";
