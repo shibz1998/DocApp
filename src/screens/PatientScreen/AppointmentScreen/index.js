@@ -80,7 +80,6 @@ export default function AppointmentScreen(props) {
   const { listenToDoctorProfiles } = useFirestore();
 
   const [doctors, setDoctors] = useState([]);
-  const [filteredDoctors, setFilteredDoctors] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -89,7 +88,7 @@ export default function AppointmentScreen(props) {
   const [appmtTime, setAppmtTime] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
   useEffect(() => {
     const unsubscribe = listenToDoctorProfiles(
       (newDoctors) => {
@@ -104,8 +103,11 @@ export default function AppointmentScreen(props) {
   }, []);
 
   useEffect(() => {
-    const filtered = doctors.filter((doctor) =>
-      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = doctors.filter(
+      (doctor) =>
+        doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredDoctors(filtered);
   }, [searchTerm, doctors]);
@@ -161,12 +163,14 @@ export default function AppointmentScreen(props) {
         }}
       >
         <View style={styles.modalView}>
+          <TextInput value={selectedDoctor.id} style={styles.input} />
           <TextInput
-            placeholder="Custom Message"
-            onChangeText={setCustomMessage}
-            value={customMessage}
+            placeholder="Appointment Date"
+            onChangeText={setAppmtDate}
+            value={appmtDate}
             style={styles.input}
           />
+
           <TextInput
             placeholder="Appointment Date"
             onChangeText={setAppmtDate}
@@ -180,6 +184,7 @@ export default function AppointmentScreen(props) {
             style={styles.input}
           />
           <Button title="Submit Request" onPress={submitAppointmentRequest} />
+          <Button title="Cancel" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
     </View>
@@ -220,6 +225,6 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    width: "80%",
+    width: "90%",
   },
 });
