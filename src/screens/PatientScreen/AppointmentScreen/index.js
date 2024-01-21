@@ -80,6 +80,7 @@ export default function AppointmentScreen(props) {
   const { listenToDoctorProfiles } = useFirestore();
 
   const [doctors, setDoctors] = useState([]);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -87,15 +88,27 @@ export default function AppointmentScreen(props) {
   const [appmtDate, setAppmtDate] = useState("");
   const [appmtTime, setAppmtTime] = useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const unsubscribe = listenToDoctorProfiles(
-      (newDoctors) => setDoctors(newDoctors),
+      (newDoctors) => {
+        setDoctors(newDoctors);
+        setFilteredDoctors(newDoctors);
+      },
       (error) => console.error("Error listening to doctor profiles:", error)
     );
 
     // Cleanup listener on component unmount
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const filtered = doctors.filter((doctor) =>
+      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredDoctors(filtered);
+  }, [searchTerm, doctors]);
 
   const handleRequestAppointment = (doctor) => {
     setSelectedDoctor(doctor);
@@ -107,14 +120,12 @@ export default function AppointmentScreen(props) {
     // Implement the logic to save the appointment request to Firebase
     setModalVisible(false);
   };
-  console.log("-------->");
-  console.log(doctors);
 
   const renderDoctor = ({ item }) => (
     <View style={[styles.card, { flexDirection: "row" }]}>
       <View>
         <Text>Name: {item.name}</Text>
-        <Text>location: {item.location}</Text>
+        <Text>Location: {item.location}</Text>
         <Text>Speciality: {item.speciality}</Text>
       </View>
       <View style={{ justifyContent: "center" }}>
@@ -128,8 +139,15 @@ export default function AppointmentScreen(props) {
 
   return (
     <View style={styles.container}>
+      <TextInput
+        placeholder="Search by Specialty"
+        style={styles.input}
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+      />
+
       <FlatList
-        data={doctors}
+        data={filteredDoctors}
         renderItem={renderDoctor}
         keyExtractor={(item) => item.id}
       />
