@@ -115,6 +115,7 @@ import {
   DocDashboardScreen,
   PatientDashboardScreen,
   PatientBookAppointmentScreen,
+  PatientMyAppointsmentsScreen,
 } from "../screens";
 
 // import { FIREBASE_AUTH } from "../../FirebaseConfig";
@@ -173,6 +174,11 @@ const PatientBottomDrawer = () => {
         name="PatientBookAppointmentScreen"
         component={PatientBookAppointmentScreen}
         options={{ title: "Book Appointment" }}
+      />
+      <Tab.Screen
+        name="PatientMyAppointsmentsScreen"
+        component={PatientMyAppointsmentsScreen}
+        options={{ title: "Manage Appointments" }}
       />
     </Tab.Navigator>
   );

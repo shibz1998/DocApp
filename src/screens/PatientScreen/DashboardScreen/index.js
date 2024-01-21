@@ -4,27 +4,49 @@ import React, { useState, useEffect } from "react";
 import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
 
+import { useUserContext } from "../../../UserContext";
+
 export default function DashboardScreen(props) {
   console.log("Patient Dashboard Running");
   const { currentUser, signOutUser } = useFirebaseAuth();
-  const { listenToDocument } = useFirestore();
+  const { getDocument } = useFirestore();
   const [userData, setUserData] = useState(null);
-  useEffect(() => {
-    if (currentUser) {
-      console.log(currentUser.uid);
-      const collectionName = "UserProfile";
-      const unsubscribe = listenToDocument(
-        collectionName,
-        currentUser.uid,
-        (docs) => setUserData(docs[0]),
-        (error) => setError(error)
-      );
 
-      return () => unsubscribe();
-    } else {
-      console.log("error");
-    }
-  }, [currentUser]);
+  const { userID } = useUserContext();
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     console.log(currentUser.uid);
+  //     const collectionName = "UserProfile";
+  //     const unsubscribe = listenToDocument(
+  //       collectionName,
+  //       currentUser.uid,
+  //       (docs) => setUserData(docs[0]),
+  //       (error) => setError(error)
+  //     );
+
+  //     return () => unsubscribe();
+  //   } else {
+  //     console.log("error");
+  //   }
+  // }, [currentUser]);
+
+  useEffect(() => {
+    const collectionName = "UserProfile";
+    const filterField = "userId";
+
+    const unsubscribe = getDocument(
+      collectionName,
+      filterField,
+      userID,
+      (docs) => setUserData(docs[0]),
+      (error) => setError(error)
+    );
+
+    return () => unsubscribe();
+  }, [userID]);
+
+  console.log();
 
   const handleLogout = async () => {
     try {
