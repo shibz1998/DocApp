@@ -1,113 +1,6 @@
-// import React, { useState, useEffect } from "react";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { onAuthStateChanged } from "firebase/auth";
-// import { useUserContext } from "../UserContext";
-// import {
-//   Login,
-//   SignUp,
-//   DocDashboardScreen,
-//   PatientDashboardScreen,
-// } from "../screens";
-
-// import { FIREBASE_AUTH } from "../../FirebaseConfig";
-
-// const Tab = createBottomTabNavigator();
-// const Stack = createNativeStackNavigator();
-
-// const AuthStack = () => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Login" component={Login} />
-//       <Stack.Screen
-//         name="SignUp"
-//         component={SignUp}
-//         options={{ title: "Sign Up" }}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
-
-// const DocBottomDrawer = () => {
-//   return (
-//     <Tab.Navigator initialRouteName="DocDashboardScreen">
-//       <Tab.Screen
-//         name="DocDashboardScreen"
-//         component={DocDashboardScreen}
-//         options={{ title: "Dashboard" }}
-//       />
-//       {/* <Tab.Screen
-//         name="DocUpcomingAppointments"
-//         component={DocUpcomingAppointments}
-//         options={{ title: "Upcoming Appointsment" }}
-//       />
-
-//       <Tab.Screen
-//         name="DocUpcomingAppointments"
-//         component={DocUpcomingAppointments}
-//         options={{ title: "Manage Appointsment" }}
-//       /> */}
-//     </Tab.Navigator>
-//   );
-// };
-
-// const PatientBottomDrawer = () => {
-//   return (
-//     <Tab.Navigator initialRouteName="PatientDashboardScreen">
-//       <Tab.Screen
-//         name="PatientDashboardScreen"
-//         component={PatientDashboardScreen}
-//         options={{ title: "Dashboard" }}
-//       />
-//     </Tab.Navigator>
-//   );
-// };
-
-// export default function Navigator() {
-//   const { userType, setUserTypeContext } = useUserContext();
-//   console.log("NAV SCREEN RENDERING");
-//   // console.log("UserType:: " + userType);
-//   console.log("UserType");
-
-//   const auth = FIREBASE_AUTH;
-//   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         // User is logged in
-//         setIsUserLoggedIn(true);
-//         console.log("User", JSON.stringify(user));
-//         const displayName = user.displayName;
-
-//         console.log(displayName);
-//         if (displayName) {
-//           setUserTypeContext(displayName || "");
-
-//           console.log(displayName);
-//         } else {
-//           setUserTypeContext("");
-//         }
-//       } else {
-//         setIsUserLoggedIn(false);
-//         setUserTypeContext("");
-//       }
-//     });
-
-//     return () => unsubscribe();
-//   }, []);
-
-//   return isUserLoggedIn
-//     ? userType === "doctor"
-//       ? DocBottomDrawer()
-//       : PatientBottomDrawer()
-//     : AuthStack();
-// }
-
 import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { onAuthStateChanged } from "firebase/auth";
 import { useUserContext } from "../UserContext";
 import {
   Login,
@@ -118,13 +11,13 @@ import {
   PatientMyAppointsmentsScreen,
 } from "../screens";
 
-// import { FIREBASE_AUTH } from "../../FirebaseConfig";
-
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { useFirestore } from "../hooks/useFirestore";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const Placeholder = () => null;
 
 const AuthStack = () => {
   return (
@@ -163,6 +56,16 @@ const DocBottomDrawer = () => {
 };
 
 const PatientBottomDrawer = () => {
+  const { signOutUser } = useFirebaseAuth();
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      console.log("User signed out successfully");
+      // Additional logic after logout (like navigating to a login screen)
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   return (
     <Tab.Navigator initialRouteName="PatientDashboardScreen">
       <Tab.Screen
@@ -180,44 +83,49 @@ const PatientBottomDrawer = () => {
         component={PatientMyAppointsmentsScreen}
         options={{ title: "Manage Appointments" }}
       />
+      <Tab.Screen
+        name="Logout"
+        component={Placeholder}
+        listeners={{
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+            handleLogout();
+          },
+        }}
+        options={{ title: "Logout" }}
+      />
     </Tab.Navigator>
   );
 };
 
 export default function Navigator() {
   const { userType, setUserTypeContext, setUserIDContext } = useUserContext();
-  const { currentUser } = useFirebaseAuth();
-
-  const { listenToDocument } = useFirestore();
-  const [documents, setDocuments] = useState([]);
+  const { currentUser, signOutUser } = useFirebaseAuth();
+  const { getDocument } = useFirestore();
   const [error, setError] = useState(null);
-
   console.log("NAV SCREEN RENDERING");
-  console.log("UserType:: " + userType);
-
-  // const auth = FIREBASE_AUTH;
-  // const [isUserLoggedIn, setIsUserLoggedIn] = useState(currentUser);
-  const isUserLoggedIn = currentUser != null;
 
   useEffect(() => {
     if (currentUser) {
       console.log("User For  --------", currentUser.uid); //JSON.stringify(currentUser.uid)
       setUserIDContext(currentUser.uid);
       const collectionName = "UserProfile";
-      const unsubscribe = listenToDocument(
+      const filterField = "userId";
+
+      const unsubscribe = getDocument(
         collectionName,
+        filterField,
         currentUser.uid,
         (docs) => setUserTypeContext(docs[0].userType),
         (error) => setError(error)
       );
-      console.log(userType);
       return () => unsubscribe();
     } else {
       setUserTypeContext("");
-      console.log("Current user set to " + currentUser);
-      // setIsUserLoggedIn(false);
+      console.log("Current user should be null  || " + currentUser);
     }
-  }, [currentUser, setUserTypeContext]);
+  }, [currentUser]);
 
   if (!currentUser) {
     return <AuthStack />;

@@ -41,7 +41,6 @@ export default function InputComponent({
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     marginVertical: 5,
