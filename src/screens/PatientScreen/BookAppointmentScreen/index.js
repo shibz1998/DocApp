@@ -78,10 +78,10 @@ import { useFirestore } from "../../../hooks/useFirestore";
 
 import { useUserContext } from "../../../UserContext";
 
-export default function AppointmentScreen(props) {
+export default function BookAppointmentScreen(props) {
   const { userID } = useUserContext();
 
-  const { listenToDoctorProfiles } = useFirestore();
+  const { listenToDoctorProfiles, addDocument } = useFirestore();
 
   const [doctors, setDoctors] = useState([]);
 
@@ -122,15 +122,24 @@ export default function AppointmentScreen(props) {
   };
 
   const submitAppointmentRequest = async () => {
-    console.log(
-      "Submitting appointment request for:",
-      selectedDoctor.id,
-      userID,
-      appmtDate,
-      appmtTime,
-      customMessage
-    );
-    // Implement the logic to save the appointment request to Firebase
+    const appointmentData = {
+      doctorId: selectedDoctor.id,
+      patientId: userID, // Assuming you have the patient's ID stored in userID
+      customMessage: customMessage,
+      appmtDate: appmtDate,
+      appmtTime: appmtTime,
+      status: "pending",
+    };
+
+    console.log("Submitting appointment request:", appointmentData);
+
+    try {
+      await addDocument("Appointment", appointmentData);
+      console.log("Appointment request submitted successfully");
+    } catch (error) {
+      console.error("Error submitting appointment request:", error);
+    }
+
     setModalVisible(false);
   };
 

@@ -2,11 +2,11 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import DocDashboardScreen from "./DocScreen/DashboardScreen";
 import PatientDashboardScreen from "./PatientScreen/DashboardScreen";
-import PatientAppointmentScreen from "./PatientScreen/AppointmentScreen";
+import PatientBookAppointmentScreen from "./PatientScreen/BookAppointmentScreen";
 export {
   Login,
   SignUp,
   DocDashboardScreen,
   PatientDashboardScreen,
-  PatientAppointmentScreen,
+  PatientBookAppointmentScreen,
 };

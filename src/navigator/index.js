@@ -114,7 +114,7 @@ import {
   SignUp,
   DocDashboardScreen,
   PatientDashboardScreen,
-  PatientAppointmentScreen,
+  PatientBookAppointmentScreen,
 } from "../screens";
 
 // import { FIREBASE_AUTH } from "../../FirebaseConfig";
@@ -170,17 +170,16 @@ const PatientBottomDrawer = () => {
         options={{ title: "Dashboard" }}
       />
       <Tab.Screen
-        name="PatientAppointmentScreen"
-        component={PatientAppointmentScreen}
-        options={{ title: "Appointment" }}
+        name="PatientBookAppointmentScreen"
+        component={PatientBookAppointmentScreen}
+        options={{ title: "Book Appointment" }}
       />
     </Tab.Navigator>
   );
 };
 
 export default function Navigator() {
-  const { userType, setUserTypeContext, userID, setUserIDContext } =
-    useUserContext();
+  const { userType, setUserTypeContext, setUserIDContext } = useUserContext();
   const { currentUser } = useFirebaseAuth();
 
   const { listenToDocument } = useFirestore();
