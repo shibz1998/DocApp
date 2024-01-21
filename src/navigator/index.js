@@ -179,7 +179,8 @@ const PatientBottomDrawer = () => {
 };
 
 export default function Navigator() {
-  const { userType, setUserTypeContext } = useUserContext();
+  const { userType, setUserTypeContext, userID, setUserIDContext } =
+    useUserContext();
   const { currentUser } = useFirebaseAuth();
 
   const { listenToDocument } = useFirestore();
@@ -196,8 +197,7 @@ export default function Navigator() {
   useEffect(() => {
     if (currentUser) {
       console.log("User For  --------", currentUser.uid); //JSON.stringify(currentUser.uid)
-      // setUserTypeContext(userType);
-
+      setUserIDContext(currentUser.uid);
       const collectionName = "UserProfile";
       const unsubscribe = listenToDocument(
         collectionName,

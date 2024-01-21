@@ -15,7 +15,6 @@ export const UserProvider = ({ children }) => {
         userType,
         setUserTypeContext,
         userID,
-        setUserID,
         setUserIDContext,
       }}
     >

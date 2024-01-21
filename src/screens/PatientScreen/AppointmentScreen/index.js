@@ -76,7 +76,11 @@ import {
 } from "react-native";
 import { useFirestore } from "../../../hooks/useFirestore";
 
+import { useUserContext } from "../../../UserContext";
+
 export default function AppointmentScreen(props) {
+  const { userID } = useUserContext();
+
   const { listenToDoctorProfiles } = useFirestore();
 
   const [doctors, setDoctors] = useState([]);
@@ -118,7 +122,14 @@ export default function AppointmentScreen(props) {
   };
 
   const submitAppointmentRequest = async () => {
-    console.log("Submitting appointment request for:", selectedDoctor.name);
+    console.log(
+      "Submitting appointment request for:",
+      selectedDoctor.id,
+      userID,
+      appmtDate,
+      appmtTime,
+      customMessage
+    );
     // Implement the logic to save the appointment request to Firebase
     setModalVisible(false);
   };
@@ -162,29 +173,35 @@ export default function AppointmentScreen(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.modalView}>
-          <TextInput value={selectedDoctor.id} style={styles.input} />
-          <TextInput
-            placeholder="Appointment Date"
-            onChangeText={setAppmtDate}
-            value={appmtDate}
-            style={styles.input}
-          />
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {selectedDoctor && selectedDoctor.id ? (
+              <TextInput value={selectedDoctor.id} style={styles.input} />
+            ) : null}
 
-          <TextInput
-            placeholder="Appointment Date"
-            onChangeText={setAppmtDate}
-            value={appmtDate}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Appointment Time"
-            onChangeText={setAppmtTime}
-            value={appmtTime}
-            style={styles.input}
-          />
-          <Button title="Submit Request" onPress={submitAppointmentRequest} />
-          <Button title="Cancel" onPress={() => setModalVisible(false)} />
+            {userID && <TextInput value={userID} style={styles.input} />}
+            <TextInput
+              placeholder="Custom Message"
+              onChangeText={setCustomMessage}
+              value={customMessage}
+              style={styles.input}
+            />
+
+            <TextInput
+              placeholder="Appointment Date"
+              onChangeText={setAppmtDate}
+              value={appmtDate}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Appointment Time"
+              onChangeText={setAppmtTime}
+              value={appmtTime}
+              style={styles.input}
+            />
+            <Button title="Submit Request" onPress={submitAppointmentRequest} />
+            <Button title="Cancel" onPress={() => setModalVisible(false)} />
+          </View>
         </View>
       </Modal>
     </View>
@@ -204,6 +221,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     margin: 20,
@@ -225,6 +248,6 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    width: "90%",
+    width: "80%",
   },
 });
