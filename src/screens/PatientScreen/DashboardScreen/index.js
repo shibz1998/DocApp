@@ -1,17 +1,13 @@
 import { StyleSheet, Text, View, Button } from "react-native";
-
 import React, { useState, useEffect } from "react";
 import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
-
 import { useUserContext } from "../../../UserContext";
-
 export default function DashboardScreen(props) {
   console.log("Patient Dashboard Running");
   const { currentUser, signOutUser } = useFirebaseAuth();
   const { getDocument } = useFirestore();
   const [userData, setUserData] = useState(null);
-
   const { userID } = useUserContext();
 
   useEffect(() => {
