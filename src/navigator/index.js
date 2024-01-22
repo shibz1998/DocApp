@@ -12,6 +12,7 @@ import {
   PatientDashboardScreen,
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
+  PatientDoctorDetailsScreen,
 } from "../screens";
 import LogoutComponent from "../components/LogoutComponent";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
@@ -73,22 +74,47 @@ const PatientBottomDrawer = () => {
         component={PatientDashboardScreen}
         options={{ title: "Dashboard" }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="PatientBookAppointmentScreen"
         component={PatientBookAppointmentScreen}
         options={{ title: "Book Appointment" }}
+      /> */}
+      <Tab.Screen
+        name="BookAppointment"
+        component={PatientDetailsStack}
+        options={{ headerShown: false }}
       />
+
       <Tab.Screen
         name="PatientMyAppointsmentsScreen"
         component={PatientMyAppointsmentsScreen}
         options={{ title: "Manage Appointments" }}
       />
+
       <Tab.Screen
         name="Logout"
         component={LogoutComponent}
         options={{ title: "Logout" }}
       />
     </Tab.Navigator>
+  );
+};
+
+const PatientDetailsStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="PatientBookAppointmentScreen"
+        component={PatientBookAppointmentScreen}
+        options={{ title: "Book Appointment" }}
+      />
+
+      <Stack.Screen
+        name="PatientDoctorDetailsScreen"
+        component={PatientDoctorDetailsScreen}
+        options={{ title: "Doctor Details" }}
+      />
+    </Stack.Navigator>
   );
 };
 

@@ -106,30 +106,3 @@ export const useFirestore = () => {
     deleteDocument,
   };
 };
-
-// const listenToDocument = (collectionName, userId, onUpdate, onError) => {
-//   const q = query(
-//     collection(FIRESTORE_DB, collectionName),
-//     where("userId", "==", userId)
-//   );
-//   const unsubscribe = onSnapshot(
-//     q,
-//     (querySnapshot) => {
-//       if (!querySnapshot.empty) {
-//         const docs = querySnapshot.docs.map((doc) => doc.data());
-//         onUpdate(docs);
-//       } else {
-//         console.log("No documents found.");
-//         onUpdate([]);
-//       }
-//     },
-//     (error) => {
-//       console.error("Error listening to document:", error);
-//       if (onError) {
-//         onError(error);
-//       }
-//     }
-//   );
-
-//   return unsubscribe;
-// };

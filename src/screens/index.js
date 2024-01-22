@@ -7,6 +7,7 @@ import DocMyProfileScreen from "./DocScreen/MyProfileScreen";
 import PatientDashboardScreen from "./PatientScreen/DashboardScreen";
 import PatientBookAppointmentScreen from "./PatientScreen/BookAppointmentScreen";
 import PatientMyAppointsmentsScreen from "./PatientScreen/MyAppointmentsScreen";
+import PatientDoctorDetailsScreen from "./PatientScreen/DoctorDetailsScreen";
 export {
   Login,
   SignUp,
@@ -17,4 +18,5 @@ export {
   PatientDashboardScreen,
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
+  PatientDoctorDetailsScreen,
 };

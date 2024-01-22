@@ -58,6 +58,16 @@ export default function BookAppointmentScreen(props) {
     setModalVisible(true);
   };
 
+  const viewDoctorDetails = (doctor) => {
+    setSelectedDoctor(doctor);
+    console.log("-------------------------");
+    console.log(doctor.userId);
+
+    props.navigation.navigate("PatientDoctorDetailsScreen", {
+      doctorId: doctor.userId,
+    });
+  };
+
   const submitAppointmentRequest = async () => {
     const appointmentData = {
       doctorId: selectedDoctor.userId,
@@ -81,7 +91,12 @@ export default function BookAppointmentScreen(props) {
   };
 
   const renderDoctor = ({ item }) => (
-    <View style={[styles.card, { flexDirection: "row" }]}>
+    <View
+      style={[
+        styles.card,
+        { flexDirection: "row", justifyContent: "space-between" },
+      ]}
+    >
       <View>
         <Text>Name: {item.name}</Text>
         <Text>Location: {item.location}</Text>
@@ -91,6 +106,9 @@ export default function BookAppointmentScreen(props) {
       <View style={{ justifyContent: "center" }}>
         <TouchableOpacity onPress={() => handleRequestAppointment(item)}>
           <Text style={{ color: "blue" }}>Request Appointment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => viewDoctorDetails(item)}>
+          <Text style={{ color: "blue" }}>View Doctor Details</Text>
         </TouchableOpacity>
       </View>
     </View>
