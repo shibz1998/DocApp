@@ -6,6 +6,7 @@ import {
   Login,
   SignUp,
   DocDashboardScreen,
+  DocManageAppointmentsScreen,
   PatientDashboardScreen,
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
@@ -29,7 +30,6 @@ const AuthStack = () => {
     </Stack.Navigator>
   );
 };
-
 const DocBottomDrawer = () => {
   return (
     <Tab.Navigator initialRouteName="DocDashboardScreen">
@@ -38,17 +38,13 @@ const DocBottomDrawer = () => {
         component={DocDashboardScreen}
         options={{ title: "Dashboard" }}
       />
-      {/* <Tab.Screen
-        name="DocUpcomingAppointments"
-        component={DocUpcomingAppointments}
-        options={{ title: "Upcoming Appointsment" }}
-      />
 
       <Tab.Screen
-        name="DocUpcomingAppointments"
-        component={DocUpcomingAppointments}
-        options={{ title: "Manage Appointsment" }}
-      /> */}
+        name="DocManageAppointmentsScreen"
+        component={DocManageAppointmentsScreen}
+        options={{ title: "Manage Appointments" }}
+      />
+
       <Tab.Screen
         name="Logout"
         component={LogoutComponent}
@@ -109,7 +105,7 @@ export default function Navigator() {
       return () => unsubscribe();
     } else {
       setUserTypeContext("");
-      console.log("Current user should be null  || " + currentUser);
+      console.log("Current user should be null  ||" + currentUser);
     }
   }, [currentUser]);
 

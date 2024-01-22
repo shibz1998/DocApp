@@ -1,14 +1,11 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 
 import React, { useState, useEffect } from "react";
-import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
-
 import { useUserContext } from "../../../UserContext";
-
 export default function DashboardScreen(props) {
   console.log("Doctor Dashboard Running");
-  const { currentUser, signOutUser } = useFirebaseAuth();
+
   const { getDocument } = useFirestore();
   const [userData, setUserData] = useState(null);
 
@@ -24,20 +21,10 @@ export default function DashboardScreen(props) {
       (docs) => setUserData(docs[0]),
       (error) => setError(error)
     );
+
+    console.log(userData);
     return () => unsubscribe();
   }, []);
-
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-
-      console.log("User signed out successfully -----");
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
-
-  console.log(userData);
 
   return (
     <View style={styles.container}>
@@ -52,7 +39,6 @@ export default function DashboardScreen(props) {
           <Text>Location: {userData.location}</Text>
         </View>
       )}
-      <Button title="LOG OUT" onPress={handleLogout} />
     </View>
   );
 }

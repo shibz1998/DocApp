@@ -7,6 +7,7 @@ import {
   Modal,
   TextInput,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { useFirestore } from "../../../hooks/useFirestore";
 
@@ -36,6 +37,8 @@ export default function BookAppointmentScreen(props) {
       (error) => console.error("Error listening to doctor profiles:", error)
     );
 
+    console.log(doctors);
+
     // Cleanup listener on component unmount
     return () => unsubscribe();
   }, []);
@@ -57,7 +60,7 @@ export default function BookAppointmentScreen(props) {
 
   const submitAppointmentRequest = async () => {
     const appointmentData = {
-      doctorId: selectedDoctor.id,
+      doctorId: selectedDoctor.userId,
       patientId: userID, // Assuming you have the patient's ID stored in userID
       customMessage: customMessage,
       appmtDate: appmtDate,
@@ -83,12 +86,12 @@ export default function BookAppointmentScreen(props) {
         <Text>Name: {item.name}</Text>
         <Text>Location: {item.location}</Text>
         <Text>Speciality: {item.speciality}</Text>
+        <Text>Email: {item.email}</Text>
       </View>
       <View style={{ justifyContent: "center" }}>
-        <Button
-          title="Request Appointment"
-          onPress={() => handleRequestAppointment(item)}
-        />
+        <TouchableOpacity onPress={() => handleRequestAppointment(item)}>
+          <Text style={{ color: "blue" }}>Request Appointment</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -118,8 +121,8 @@ export default function BookAppointmentScreen(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {selectedDoctor && selectedDoctor.id ? (
-              <TextInput value={selectedDoctor.id} style={styles.input} />
+            {selectedDoctor && selectedDoctor.userId ? (
+              <TextInput value={selectedDoctor.userId} style={styles.input} />
             ) : null}
 
             {userID && <TextInput value={userID} style={styles.input} />}
