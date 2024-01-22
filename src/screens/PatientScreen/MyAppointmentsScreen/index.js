@@ -11,7 +11,7 @@ import {
 import { useFirestore } from "../../../hooks/useFirestore";
 import { useUserContext } from "../../../UserContext";
 
-export default function MyAppointments(props) {
+export default function MyAppointmentsScreen(props) {
   const { getDocument } = useFirestore();
   const [appointmentData, setAppointmentData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
