@@ -43,7 +43,6 @@ const Experience = () => {
   const submitExperience = async (data) => {
     resetModal();
     const { clinic, startYear, endYear, description } = data;
-
     if (userID) {
       try {
         const experienceObj = {
@@ -84,7 +83,7 @@ const Experience = () => {
   const renderExperience = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        <Text style={styles.contentText}>Clinic: {item.Clinic}</Text>
+        <Text style={styles.contentText}>Clinic: {item.clinic}</Text>
         <Text style={styles.contentText}>Start Year: {item.startYear}</Text>
         <Text style={styles.contentText}>End Year: {item.endYear}</Text>
         <Text style={styles.contentText}>Description: {item.description}</Text>
