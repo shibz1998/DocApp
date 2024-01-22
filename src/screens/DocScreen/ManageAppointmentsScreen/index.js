@@ -57,19 +57,19 @@ export default function ManageAppointmentsScreen(props) {
   const { getDocument, updateAppointmentStatus } = useFirestore();
   const [appointmentData, setAppointmentData] = useState([]);
 
-  useEffect(() => {
-    const collectionName = "Appointment";
-    const filterField = "doctorId";
-    const unsubscribe = getDocument(
-      collectionName,
-      filterField,
-      userID,
-      (docs) => setAppointmentData(docs),
-      (error) => console.error(error)
-    );
-    console.log(appointmentData);
-    return () => unsubscribe();
-  }, [userID]);
+  // useEffect(() => {
+  //   const collectionName = "Appointment";
+  //   const filterField = "doctorId";
+  //   const unsubscribe = getDocument(
+  //     collectionName,
+  //     filterField,
+  //     userID,
+  //     (docs) => setAppointmentData(docs),
+  //     (error) => console.error(error)
+  //   );
+  //   console.log(appointmentData);
+  //   return () => unsubscribe();
+  // }, [userID]);
 
   useEffect(() => {
     const collectionName = "Appointment";
