@@ -12,11 +12,10 @@ import { useForm } from "react-hook-form";
 import { useFirestore } from "../../hooks/useFirestore";
 import InputComponent from "../InputComponent";
 import { useUserContext } from "../../UserContext";
-const { addDocument, getDocument } = useFirestore();
+const { addDocument, getDocument, deleteDocument } = useFirestore();
 const Qualification = () => {
   const [qualifications, setQualifications] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tempData, setTempData] = useState({});
   const { userID } = useUserContext();
 
   const {
@@ -42,6 +41,7 @@ const Qualification = () => {
   }, []);
 
   const submitQualification = async (data) => {
+    resetModal();
     const { degreeName, institute, passingYear } = data;
 
     if (userID) {
@@ -58,24 +58,25 @@ const Qualification = () => {
         console.error("Error during submitting:", error);
       }
     } else {
-      Alert.alert("Please Login");
+      Alert.alert("Something went Wrong");
     }
-    resetModal();
-    reset();
+  };
+
+  const removeQualification = async (qualificationId) => {
+    try {
+      await deleteDocument("Qualification", qualificationId);
+      console.log("Qualification removed from Firestore successfully!!!!");
+    } catch (error) {
+      console.error("Error during removing:", error);
+    }
   };
 
   const openQualificationModal = () => {
     setModalVisible(true);
   };
 
-  //   const submitQualification = () => {
-  //     setQualifications([...qualifications, tempData]);
-
-  //     resetModal();
-  //   };
-
   const resetModal = () => {
-    setTempData({});
+    reset();
     setModalVisible(false);
   };
 
@@ -85,7 +86,7 @@ const Qualification = () => {
       <View style={styles.itemActions}>
         <TouchableOpacity
           style={[styles.addButton, { backgroundColor: "red" }]}
-          onPress={""}
+          onPress={() => removeQualification(item.id)}
         >
           <Text style={{ color: "white" }}>Remove</Text>
         </TouchableOpacity>
@@ -103,14 +104,6 @@ const Qualification = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {/* <TextInput
-              placeholder="Degree Name"
-              onChangeText={(text) =>
-                setTempData({ ...tempData, degreeName: text })
-              }
-              value={tempData.degreeName || ""}
-            /> */}
-
             <InputComponent
               control={control}
               placeholder={"Degree Name"}
@@ -118,7 +111,6 @@ const Qualification = () => {
               error={errors?.degreeName}
               autoCapitalize="none"
             />
-
             <InputComponent
               control={control}
               placeholder={"Institute"}
@@ -138,7 +130,6 @@ const Qualification = () => {
               title="Submit"
               onPress={handleSubmit(submitQualification)}
             />
-
             <Button title="Cancel" onPress={resetModal} />
           </View>
         </View>

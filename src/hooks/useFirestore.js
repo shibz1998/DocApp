@@ -3,7 +3,7 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
+  deleteDoc,
   query,
   where,
   onSnapshot,
@@ -86,11 +86,24 @@ export const useFirestore = () => {
     }
   };
 
+  const deleteDocument = async (collectionName, documentId) => {
+    const docToDelete = doc(FIRESTORE_DB, collectionName, documentId);
+
+    try {
+      await deleteDoc(docToDelete);
+      console.log("Document successfully deleted!");
+    } catch (error) {
+      console.error("Error removing document: ", error);
+      throw error;
+    }
+  };
+
   return {
     addDocument,
     getDocument,
     listenToDoctorProfiles,
     updateAppointmentStatus,
+    deleteDocument,
   };
 };
 
