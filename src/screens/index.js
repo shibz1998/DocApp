@@ -8,6 +8,8 @@ import PatientDashboardScreen from "./PatientScreen/DashboardScreen";
 import PatientBookAppointmentScreen from "./PatientScreen/BookAppointmentScreen";
 import PatientMyAppointsmentsScreen from "./PatientScreen/MyAppointmentsScreen";
 import PatientDoctorDetailsScreen from "./PatientScreen/DoctorDetailsScreen";
+import PatientAppointmentDetailedScreen from "./PatientScreen/AppointmentDetailedScreen";
+
 export {
   Login,
   SignUp,
@@ -19,4 +21,5 @@ export {
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
   PatientDoctorDetailsScreen,
+  PatientAppointmentDetailedScreen,
 };

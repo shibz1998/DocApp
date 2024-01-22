@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Modal,
-  TextInput,
-  FlatList,
-} from "react-native";
+import { View, Text, StyleSheet, Button, Modal, FlatList } from "react-native";
 import { useFirestore } from "../../../hooks/useFirestore";
 import { useUserContext } from "../../../UserContext";
 
@@ -20,37 +12,38 @@ export default function MyAppointmentsScreen(props) {
   useEffect(() => {
     const collectionName = "Appointment";
     const filterField = "patientId";
-
     const unsubscribe = getDocument(
       collectionName,
       filterField,
       userID,
       (docs) => setAppointmentData(docs),
-      (error) => setError(error)
+      (error) => console.error(error)
     );
-
     return () => unsubscribe();
   }, [userID]);
 
-  console.log(appointmentData);
   const renderAppointmentData = ({ item }) => (
-    <View style={[styles.card, { flexDirection: "row" }]}>
-      <View>
-        <Text>Status: {item.status}</Text>
-        <Text>DoctorID: {item.doctorId}</Text>
-        {/* <Text>Speciality: {item.speciality}</Text> */}
+    <View style={styles.card}>
+      <View style={styles.cardContent}>
+        <Text style={styles.cardText}>Status: {item.status}</Text>
+        <Text style={styles.cardText}>Date: {item.appmtDate}</Text>
+        <Text style={styles.cardText}>Time: {item.appmtTime}</Text>
+        {/* <Text style={styles.cardText}>DoctorID: {item.doctorId}</Text> */}
+        <Text style={styles.cardText}>Message: {item.customMessage}</Text>
       </View>
-      <View style={{ justifyContent: "center" }}>
+      <View style={styles.buttonContainer}>
         <Button
           title="View"
           onPress={() => {
-            setModalVisible(true);
+            props.navigation.navigate("PatientAppointmentDetailedScreen", {
+              doctorId: item.doctorId,
+              appointmentData: item,
+            });
           }}
         />
       </View>
     </View>
   );
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -63,9 +56,7 @@ export default function MyAppointmentsScreen(props) {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={() => setModalVisible(!modalVisible)}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -76,19 +67,31 @@ export default function MyAppointmentsScreen(props) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
   card: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
     padding: 10,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
+  },
+  cardContent: {
+    flex: 1,
+  },
+  cardText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  buttonContainer: {
+    marginLeft: 10,
   },
   centeredView: {
     flex: 1,
@@ -110,12 +113,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: "80%",
   },
 });
