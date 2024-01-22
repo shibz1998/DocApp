@@ -8,6 +8,7 @@ import {
   DocDashboardScreen,
   DocManageAppointmentsScreen,
   DocUpcomingAppointmentsScreen,
+  DocMyProfileScreen,
   PatientDashboardScreen,
   PatientBookAppointmentScreen,
   PatientMyAppointsmentsScreen,
@@ -49,6 +50,11 @@ const DocBottomDrawer = () => {
         name="DocManageAppointmentsScreen"
         component={DocManageAppointmentsScreen}
         options={{ title: "Manage Appointments" }}
+      />
+      <Tab.Screen
+        name="DocMyProfileScreen"
+        component={DocMyProfileScreen}
+        options={{ title: "My Profile" }}
       />
       <Tab.Screen
         name="Logout"
