@@ -54,7 +54,7 @@ import { useUserContext } from "../../../UserContext";
 
 export default function ManageAppointmentsScreen(props) {
   const { userID } = useUserContext();
-  const { getDocument } = useFirestore();
+  const { getDocument, updateAppointmentStatus } = useFirestore();
   const [appointmentData, setAppointmentData] = useState([]);
 
   useEffect(() => {
@@ -71,12 +71,29 @@ export default function ManageAppointmentsScreen(props) {
     return () => unsubscribe();
   }, [userID]);
 
+  useEffect(() => {
+    const collectionName = "Appointment";
+    const filterField = "doctorId";
+    const unsubscribe = getDocument(
+      collectionName,
+      filterField,
+      userID,
+      (docs) => {
+        const filteredDocs = docs.filter((doc) => doc.status === "pending");
+        setAppointmentData(filteredDocs);
+      },
+      (error) => console.error(error)
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   const handleAccept = (appointmentId) => {
-    console.log("Accept", appointmentId);
+    updateAppointmentStatus(appointmentId, "accepted");
   };
 
   const handleReject = (appointmentId) => {
-    console.log("Reject", appointmentId);
+    updateAppointmentStatus(appointmentId, "rejected");
   };
 
   const renderAppointment = ({ item }) => (
@@ -86,12 +103,13 @@ export default function ManageAppointmentsScreen(props) {
         <Text>Date: {item.appmtDate}</Text>
         <Text>Time: {item.appmtTime}</Text>
         <Text>Msg: {item.customMessage}</Text>
+        <Text>Status ID: {item.status}</Text>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => handleAccept(item.patientId)}>
+        <TouchableOpacity onPress={() => handleAccept(item.id)}>
           <Text style={{ color: "green" }}>Accept</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleReject(item.patientId)}>
+        <TouchableOpacity onPress={() => handleReject(item.id)}>
           <Text style={{ color: "red" }}>Reject</Text>
         </TouchableOpacity>
       </View>
@@ -100,7 +118,6 @@ export default function ManageAppointmentsScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text>Manage Appointments</Text>
       <FlatList
         data={appointmentData}
         renderItem={renderAppointment}

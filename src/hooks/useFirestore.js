@@ -7,6 +7,7 @@ import {
   query,
   where,
   onSnapshot,
+  updateDoc,
 } from "firebase/firestore";
 
 export const useFirestore = () => {
@@ -75,10 +76,21 @@ export const useFirestore = () => {
     return unsubscribe;
   };
 
+  const updateAppointmentStatus = async (appointmentId, status) => {
+    const appointmentRef = doc(FIRESTORE_DB, "Appointment", appointmentId);
+    try {
+      await updateDoc(appointmentRef, { status: status });
+      console.log("Appointment status updated to:", status);
+    } catch (error) {
+      console.error("Error updating appointment:", error);
+    }
+  };
+
   return {
     addDocument,
     getDocument,
     listenToDoctorProfiles,
+    updateAppointmentStatus,
   };
 };
 
