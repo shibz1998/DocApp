@@ -13,8 +13,8 @@ import { useFirestore } from "../../hooks/useFirestore";
 import InputComponent from "../InputComponent";
 import { useUserContext } from "../../UserContext";
 const { addDocument, getDocument, deleteDocument } = useFirestore();
-const Qualification = () => {
-  const [qualifications, setQualifications] = useState([]);
+const Experience = () => {
+  const [experiences, setExperiences] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const { userID } = useUserContext();
 
@@ -26,34 +26,35 @@ const Qualification = () => {
   } = useForm();
 
   useEffect(() => {
-    const collectionName = "Qualification";
+    const collectionName = "Experience";
     const filterField = "userId";
     const unsubscribe = getDocument(
       collectionName,
       filterField,
       userID,
-      (docs) => setQualifications(docs),
+      (docs) => setExperiences(docs),
       (error) => setError(error)
     );
 
-    console.log(qualifications);
+    console.log(experiences);
     return () => unsubscribe();
   }, []);
 
-  const submitQualification = async (data) => {
+  const submitExperience = async (data) => {
     resetModal();
-    const { degreeName, institute, passingYear } = data;
+    const { clinic, startYear, endYear, description } = data;
 
     if (userID) {
       try {
-        const qualificationObj = {
+        const experienceObj = {
           userId: userID,
-          degreeName,
-          institute,
-          passingYear,
+          clinic,
+          startYear,
+          endYear,
+          description,
         };
-        await addDocument("Qualification", qualificationObj);
-        console.log("Qualification added to Firestore successfully!");
+        await addDocument("Experience", experienceObj);
+        console.log("Experience added to Firestore successfully!");
       } catch (error) {
         console.error("Error during submitting:", error);
       }
@@ -62,16 +63,16 @@ const Qualification = () => {
     }
   };
 
-  const removeQualification = async (qualificationId) => {
+  const removeExperience = async (experienceId) => {
     try {
-      await deleteDocument("Qualification", qualificationId);
-      console.log("Qualification removed from Firestore successfully!!!!");
+      await deleteDocument("Experience", experienceId);
+      console.log("Experience removed from Firestore successfully!!!!");
     } catch (error) {
       console.error("Error during removing:", error);
     }
   };
 
-  const openQualificationModal = () => {
+  const openExperienceModal = () => {
     setModalVisible(true);
   };
 
@@ -80,16 +81,17 @@ const Qualification = () => {
     setModalVisible(false);
   };
 
-  const renderQualification = ({ item }) => (
+  const renderExperience = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        <Text style={styles.contentText}>Degree: {item.degreeName}</Text>
-        <Text style={styles.contentText}>Institute: {item.institute}</Text>
-        <Text style={styles.contentText}>Year: {item.passingYear}</Text>
+        <Text style={styles.contentText}>Clinic: {item.Clinic}</Text>
+        <Text style={styles.contentText}>Start Year: {item.startYear}</Text>
+        <Text style={styles.contentText}>End Year: {item.endYear}</Text>
+        <Text style={styles.contentText}>Description: {item.description}</Text>
       </View>
       <TouchableOpacity
         style={[styles.addButton, { backgroundColor: "red" }]}
-        onPress={() => removeQualification(item.id)}
+        onPress={() => removeExperience(item.id)}
       >
         <Text style={{ color: "white" }}>Remove</Text>
       </TouchableOpacity>
@@ -108,48 +110,52 @@ const Qualification = () => {
           <View style={styles.modalView}>
             <InputComponent
               control={control}
-              placeholder={"Degree Name"}
-              name="degreeName"
-              error={errors?.degreeName}
+              placeholder={"Clinic"}
+              name="clinic"
+              error={errors?.Clinic}
               autoCapitalize="none"
             />
             <InputComponent
               control={control}
-              placeholder={"Institute"}
-              name="institute"
-              error={errors?.institute}
+              placeholder={"Start Year"}
+              name="startYear"
+              error={errors?.startYear}
               autoCapitalize="none"
             />
             <InputComponent
               control={control}
-              placeholder={"Passing Year"}
-              name="passingYear"
-              error={errors?.passingYear}
+              placeholder={"End Year"}
+              name="endYear"
+              error={errors?.endYear}
+              autoCapitalize="none"
+            />
+            <InputComponent
+              control={control}
+              placeholder={"Description"}
+              name="description"
+              error={errors?.description}
               autoCapitalize="none"
             />
 
-            <Button
-              title="Submit"
-              onPress={handleSubmit(submitQualification)}
-            />
+            <Button title="Submit" onPress={handleSubmit(submitExperience)} />
             <Button title="Cancel" onPress={resetModal} />
           </View>
         </View>
       </Modal>
 
       <View style={styles.headerSection}>
-        <Text style={styles.header}>Qualification</Text>
+        <Text style={styles.header}>Experience</Text>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={openQualificationModal}
+          onPress={openExperienceModal}
         >
-          <Text>Add Qualification</Text>
+          <Text>Add Experience</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
-        data={qualifications}
-        renderItem={renderQualification}
+        data={experiences}
+        renderItem={renderExperience}
         keyExtractor={(item, index) => `qual-${index}`}
       />
     </View>
@@ -234,4 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Qualification;
+export default Experience;
