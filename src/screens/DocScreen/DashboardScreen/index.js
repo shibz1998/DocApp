@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useFirestore } from "../../../hooks/useFirestore";
 import { useUserContext } from "../../../UserContext";
+import styles from "../DocStyles";
 export default function DashboardScreen(props) {
   console.log("Doctor Dashboard Running");
 
@@ -42,12 +43,3 @@ export default function DashboardScreen(props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

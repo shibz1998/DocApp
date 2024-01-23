@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "black", // Adjust the color according to your design
-    // textAlign: 'center',
+    color: "black",
     marginTop: 10,
   },
   linkText: {

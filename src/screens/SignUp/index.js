@@ -55,13 +55,11 @@ export default function SignUp(props) {
   } = useForm({
     resolver: yupResolver(createValidationSchema(userType)),
   });
-
-  // Update the schema whenever userType changes
   useEffect(() => {
     reset(
       {},
       {
-        keepValues: false, // or true, depending on how you want to handle form values
+        keepValues: false,
       }
     );
   }, [userType, reset]);
