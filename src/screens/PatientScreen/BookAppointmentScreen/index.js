@@ -71,7 +71,8 @@ export default function BookAppointmentScreen(props) {
   const submitAppointmentRequest = async () => {
     const appointmentData = {
       doctorId: selectedDoctor.userId,
-      patientId: userID, // Assuming you have the patient's ID stored in userID
+      patientId: userID,
+      doctorName: selectedDoctor.name,
       customMessage: customMessage,
       appmtDate: appmtDate,
       appmtTime: appmtTime,
@@ -139,11 +140,9 @@ export default function BookAppointmentScreen(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {selectedDoctor && selectedDoctor.userId ? (
-              <TextInput value={selectedDoctor.userId} style={styles.input} />
+            {selectedDoctor && selectedDoctor.name ? (
+              <TextInput value={selectedDoctor.name} style={styles.input} />
             ) : null}
-
-            {userID && <TextInput value={userID} style={styles.input} />}
             <TextInput
               placeholder="Custom Message"
               onChangeText={setCustomMessage}

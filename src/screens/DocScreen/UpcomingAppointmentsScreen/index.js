@@ -55,7 +55,7 @@ export default function UpcomingAppointmentsScreen(props) {
   const renderAppointment = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.appointmentInfo}>
-        <Text>Patient ID: {item.patientId}</Text>
+        <Text>Patient ID: {item.patientId.substring(0, 10)}</Text>
         <Text>Date: {item.appmtDate}</Text>
         <Text>Time: {item.appmtTime}</Text>
         <Text>Msg: {item.customMessage}</Text>
@@ -71,11 +71,15 @@ export default function UpcomingAppointmentsScreen(props) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={appointmentData}
-        renderItem={renderAppointment}
-        keyExtractor={(item) => item.id}
-      />
+      <View style={{ margin: 10 }}>
+        <FlatList
+          data={appointmentData}
+          renderItem={renderAppointment}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -115,11 +119,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#e4ede7",
     borderRadius: 10,
     padding: 15,
-    marginVertical: 5,
-    width: "93%",
+    width: "100%",
   },
   appointmentInfo: {},
   buttons: {

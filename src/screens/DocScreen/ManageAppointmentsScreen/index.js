@@ -57,20 +57,6 @@ export default function ManageAppointmentsScreen(props) {
   const { getDocument, updateAppointmentStatus } = useFirestore();
   const [appointmentData, setAppointmentData] = useState([]);
 
-  // useEffect(() => {
-  //   const collectionName = "Appointment";
-  //   const filterField = "doctorId";
-  //   const unsubscribe = getDocument(
-  //     collectionName,
-  //     filterField,
-  //     userID,
-  //     (docs) => setAppointmentData(docs),
-  //     (error) => console.error(error)
-  //   );
-  //   console.log(appointmentData);
-  //   return () => unsubscribe();
-  // }, [userID]);
-
   useEffect(() => {
     const collectionName = "Appointment";
     const filterField = "doctorId";
@@ -99,7 +85,7 @@ export default function ManageAppointmentsScreen(props) {
   const renderAppointment = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.appointmentInfo}>
-        <Text>Patient ID: {item.patientId}</Text>
+        <Text>Patient ID: {item.patientId.substring(0, 10)}</Text>
         <Text>Date: {item.appmtDate}</Text>
         <Text>Time: {item.appmtTime}</Text>
         <Text>Msg: {item.customMessage}</Text>
@@ -118,11 +104,14 @@ export default function ManageAppointmentsScreen(props) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={appointmentData}
-        renderItem={renderAppointment}
-        keyExtractor={(item) => item.id}
-      />
+      <View style={{ margin: 10 }}>
+        <FlatList
+          data={appointmentData}
+          renderItem={renderAppointment}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 }
@@ -138,11 +127,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#8fcde2",
     borderRadius: 10,
     padding: 15,
     marginVertical: 5,
-    width: "93%",
+    width: "100%",
   },
   appointmentInfo: {},
   buttons: {
