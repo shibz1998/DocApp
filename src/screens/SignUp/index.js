@@ -6,6 +6,7 @@ import {
   Alert,
   SafeAreaView,
   Image,
+  ScrollView,
 } from "react-native";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -99,108 +100,117 @@ export default function SignUp(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.card}>
-        <Image
-          source={require("../../assets/logo.png")}
-          style={{ width: 30, height: 30, borderRadius: 40 }}
-          resizeMode="contain"
-        />
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={[styles.card, { padding: 15, marginVertical: 10 }]}>
+          <Image
+            source={require("../../assets/logo.png")}
+            style={{ width: 50, height: 50, borderRadius: 40 }}
+            resizeMode="contain"
+          />
 
-        <Text style={[styles.title, { fontSize: 20 }]}>Register</Text>
+          <Text style={styles.title}>Register</Text>
 
-        <Text>Choose Account Type:</Text>
-        <View style={{ flexDirection: "row" }}>
+          <Text>Choose Account Type:</Text>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              style={
+                userType === "doctor"
+                  ? styles.selectedButton
+                  : styles.unSelectedButton
+              }
+              onPress={() => setUserType("doctor")}
+            >
+              <Text>Doctor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                userType === "patient"
+                  ? styles.selectedButton
+                  : styles.unSelectedButton
+              }
+              onPress={() => setUserType("patient")}
+            >
+              <Text>Patient</Text>
+            </TouchableOpacity>
+          </View>
+
+          <InputComponent
+            control={control}
+            placeholder={"Email"}
+            name="email"
+            error={errors?.email}
+            autoCapitalize="none"
+          />
+
+          <InputComponent
+            control={control}
+            placeholder={"Password"}
+            name="password"
+            error={errors?.password}
+            autoCapitalize="none"
+            secureTextEntry={true}
+          />
+
+          <InputComponent
+            control={control}
+            placeholder={"Name"}
+            name="name"
+            error={errors?.name}
+            autoCapitalize="none"
+          />
+
+          <InputComponent
+            control={control}
+            placeholder={"Phone Number"}
+            name="contact"
+            error={errors?.contact}
+            autoCapitalize="none"
+          />
+
+          {userType === "doctor" && (
+            <>
+              <InputComponent
+                control={control}
+                placeholder={"Speciality"}
+                name="speciality"
+                error={errors?.speciality}
+                autoCapitalize="none"
+              />
+
+              <InputComponent
+                control={control}
+                placeholder={"Location"}
+                name="location"
+                error={errors?.location}
+                autoCapitalize="none"
+              />
+            </>
+          )}
+
           <TouchableOpacity
-            style={
-              userType === "doctor"
-                ? styles.selectedButton
-                : styles.unSelectedButton
-            }
-            onPress={() => setUserType("doctor")}
+            style={styles.button}
+            onPress={handleSubmit(onSubmit)}
           >
-            <Text>Doctor</Text>
+            <Text style={styles.buttonTextColor}>Sign Up</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            style={
-              userType === "patient"
-                ? styles.selectedButton
-                : styles.unSelectedButton
-            }
-            onPress={() => setUserType("patient")}
+            style={{}}
+            onPress={() => {
+              props.navigation.navigate("Login");
+            }}
           >
-            <Text>Patient</Text>
+            <Text style={styles.linkText}>{"Back to login"}</Text>
           </TouchableOpacity>
         </View>
-
-        <InputComponent
-          control={control}
-          placeholder={"Email"}
-          name="email"
-          error={errors?.email}
-          autoCapitalize="none"
-        />
-
-        <InputComponent
-          control={control}
-          placeholder={"Password"}
-          name="password"
-          error={errors?.password}
-          autoCapitalize="none"
-          secureTextEntry={true}
-        />
-
-        <InputComponent
-          control={control}
-          placeholder={"Name"}
-          name="name"
-          error={errors?.name}
-          autoCapitalize="none"
-        />
-
-        <InputComponent
-          control={control}
-          placeholder={"Phone Number"}
-          name="contact"
-          error={errors?.contact}
-          autoCapitalize="none"
-        />
-
-        {userType === "doctor" && (
-          <>
-            <InputComponent
-              control={control}
-              placeholder={"Speciality"}
-              name="speciality"
-              error={errors?.speciality}
-              autoCapitalize="none"
-            />
-
-            <InputComponent
-              control={control}
-              placeholder={"Location"}
-              name="location"
-              error={errors?.location}
-              autoCapitalize="none"
-            />
-          </>
-        )}
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={styles.buttonTextColor}>Sign Up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{}}
-          onPress={() => {
-            props.navigation.navigate("Login");
-          }}
-        >
-          <Text style={styles.linkText}>{"Back to login"}</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
