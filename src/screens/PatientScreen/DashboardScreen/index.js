@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Text, View, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useFirebaseAuth } from "../../../hooks/useFirebaseAuth";
 import { useFirestore } from "../../../hooks/useFirestore";
 import { useUserContext } from "../../../UserContext";
+import styles from "../PatientStyles";
+
 export default function DashboardScreen(props) {
   console.log("Patient Dashboard Running");
-  const { currentUser, signOutUser } = useFirebaseAuth();
   const { getDocument } = useFirestore();
   const [userData, setUserData] = useState(null);
   const { userID } = useUserContext();
+  const [appointmentData, setAppointmentData] = useState(null);
 
   useEffect(() => {
     const collectionName = "UserProfile";
@@ -25,41 +26,137 @@ export default function DashboardScreen(props) {
     return () => unsubscribe();
   }, [userID]);
 
-  console.log();
-
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-
-      console.log("User signed out successfully -----");
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
-
-  console.log(userData);
+  useEffect(() => {
+    const collectionName = "Appointment";
+    const filterField = "patientId";
+    const unsubscribe = getDocument(
+      collectionName,
+      filterField,
+      userID,
+      (docs) => setAppointmentData(docs),
+      (error) => setError(error)
+    );
+    console.log(appointmentData);
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Patient - Dashboard Screen</Text>
-      {userData && (
-        <View>
-          <Text>Name: {userData.name}</Text>
-          <Text>contact: {userData.contact}</Text>
-          <Text>User Type: {userData.userType}</Text>
-          <Text>Name: {userData.email}</Text>
-        </View>
-      )}
-      <Button title="LOG OUT" onPress={handleLogout} />
+    <View style={{ flex: 1 }}>
+      <View style={[styles.splitterDash, { flex: 0.8 }]}>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "#fde1da",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          My Profile
+        </Text>
+        {userData && (
+          <View
+            style={{
+              justifyContent: "center",
+              backgroundColor: "#fde1da",
+              margin: 5,
+              padding: 5,
+              flex: 1,
+            }}
+          >
+            <Text>Name: {userData.name}</Text>
+            <Text>Email: {userData.email}</Text>
+            <Text>Contact: {userData.contact}</Text>
+            <Text>User Type: {userData.userType}</Text>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.splitterDash}>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "#e4ede7",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          Upcoming Appointments
+        </Text>
+
+        {appointmentData !== null && (
+          <FlatList
+            data={appointmentData.filter((item) => item.status === "accepted")}
+            keyExtractor={(item) => item.id}
+            horizontal
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.profileCard,
+                  {
+                    backgroundColor: "#e4ede7",
+                    height: "90%",
+                    width: 200,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <Text>Time: {item.appmtTime}</Text>
+                <Text>Date: {item.appmtDate}</Text>
+                <Text>Msg: {item.customMessage}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
+
+      <View style={styles.splitterDash}>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "ivory",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          Pending Request
+        </Text>
+
+        {appointmentData !== null && (
+          <FlatList
+            data={appointmentData.filter((item) => item.status === "pending")}
+            keyExtractor={(item) => item.id}
+            horizontal
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.profileCard,
+                  {
+                    backgroundColor: "ivory",
+                    width: 200,
+                    height: "90%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <Text>Time: {item.appmtTime}</Text>
+                <Text>Date: {item.appmtDate}</Text>
+                <Text>Msg: {item.customMessage}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
