@@ -113,7 +113,7 @@ const Experience = () => {
               control={control}
               placeholder={"Clinic"}
               name="clinic"
-              error={errors?.Clinic}
+              error={errors?.clinic}
               autoCapitalize="none"
             />
             <InputComponent

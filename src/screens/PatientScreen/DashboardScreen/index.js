@@ -47,7 +47,7 @@ export default function DashboardScreen(props) {
           style={[
             styles.header,
             {
-              backgroundColor: "#fde1da",
+              backgroundColor: "#8fd7c7",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -60,7 +60,7 @@ export default function DashboardScreen(props) {
           <View
             style={{
               justifyContent: "center",
-              backgroundColor: "#fde1da",
+              backgroundColor: "#8fd7c7",
               margin: 5,
               padding: 5,
               flex: 1,
@@ -79,7 +79,7 @@ export default function DashboardScreen(props) {
           style={[
             styles.header,
             {
-              backgroundColor: "#e4ede7",
+              backgroundColor: "#8fcde2",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -99,7 +99,7 @@ export default function DashboardScreen(props) {
                 style={[
                   styles.profileCard,
                   {
-                    backgroundColor: "#e4ede7",
+                    backgroundColor: "#8fcde2",
                     height: "90%",
                     width: 200,
                     justifyContent: "center",
@@ -121,7 +121,7 @@ export default function DashboardScreen(props) {
           style={[
             styles.header,
             {
-              backgroundColor: "ivory",
+              backgroundColor: "lightyellow",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -141,7 +141,7 @@ export default function DashboardScreen(props) {
                 style={[
                   styles.profileCard,
                   {
-                    backgroundColor: "ivory",
+                    backgroundColor: "lightyellow",
                     width: 200,
                     height: "90%",
                     justifyContent: "center",

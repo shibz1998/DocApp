@@ -92,11 +92,28 @@ export default function ManageAppointmentsScreen(props) {
         <Text>Status ID: {item.status}</Text>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => handleAccept(item.id)}>
-          <Text style={{ color: "green" }}>Accept</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "green",
+            padding: 8,
+            marginVertical: 5,
+            borderRadius: 5,
+          }}
+          onPress={() => handleAccept(item.id)}
+        >
+          <Text style={{ color: "white" }}>Accept</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleReject(item.id)}>
-          <Text style={{ color: "red" }}>Reject</Text>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: "red",
+            padding: 8,
+            marginVertical: 5,
+            borderRadius: 5,
+          }}
+          onPress={() => handleReject(item.id)}
+        >
+          <Text style={{ color: "white" }}>Reject</Text>
         </TouchableOpacity>
       </View>
     </View>
