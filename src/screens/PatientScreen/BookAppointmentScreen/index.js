@@ -3,15 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Modal,
   TextInput,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useFirestore } from "../../../hooks/useFirestore";
-
+import InputComponent from "../../../components/InputComponent";
 import { useUserContext } from "../../../UserContext";
+import { useForm } from "react-hook-form";
 
 export default function BookAppointmentScreen(props) {
   const { userID } = useUserContext();
@@ -22,12 +23,17 @@ export default function BookAppointmentScreen(props) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [customMessage, setCustomMessage] = useState("");
-  const [appmtDate, setAppmtDate] = useState("");
-  const [appmtTime, setAppmtTime] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDoctors, setFilteredDoctors] = useState([]);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   useEffect(() => {
     const unsubscribe = listenToDoctorProfiles(
       (newDoctors) => {
@@ -36,10 +42,7 @@ export default function BookAppointmentScreen(props) {
       },
       (error) => console.error("Error listening to doctor profiles:", error)
     );
-
     console.log(doctors);
-
-    // Cleanup listener on component unmount
     return () => unsubscribe();
   }, []);
 
@@ -68,7 +71,9 @@ export default function BookAppointmentScreen(props) {
     });
   };
 
-  const submitAppointmentRequest = async () => {
+  const submitAppointmentRequest = async (data) => {
+    const { appmtDate, appmtTime, customMessage } = data;
+
     const appointmentData = {
       doctorId: selectedDoctor.userId,
       patientId: userID,
@@ -78,9 +83,7 @@ export default function BookAppointmentScreen(props) {
       appmtTime: appmtTime,
       status: "pending",
     };
-
     console.log("Submitting appointment request:", appointmentData);
-
     try {
       await addDocument("Appointment", appointmentData);
       console.log("Appointment request submitted successfully");
@@ -89,6 +92,7 @@ export default function BookAppointmentScreen(props) {
     }
 
     setModalVisible(false);
+    Alert.alert("Successfully Submitted");
   };
 
   const renderDoctor = ({ item }) => (
@@ -117,18 +121,21 @@ export default function BookAppointmentScreen(props) {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        placeholder="Search by Specialty"
-        style={styles.input}
-        value={searchTerm}
-        onChangeText={setSearchTerm}
-      />
+      <View style={{ flex: 1 }}>
+        <TextInput
+          placeholder="Search for doctors"
+          style={styles.searchInput}
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
 
-      <FlatList
-        data={filteredDoctors}
-        renderItem={renderDoctor}
-        keyExtractor={(item) => item.id}
-      />
+        <FlatList
+          data={filteredDoctors}
+          renderItem={renderDoctor}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
 
       <Modal
         animationType="slide"
@@ -140,30 +147,77 @@ export default function BookAppointmentScreen(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {selectedDoctor && selectedDoctor.name ? (
+            {/* {selectedDoctor && selectedDoctor.name ? (
               <TextInput value={selectedDoctor.name} style={styles.input} />
-            ) : null}
-            <TextInput
-              placeholder="Custom Message"
-              onChangeText={setCustomMessage}
-              value={customMessage}
-              style={styles.input}
-            />
-
-            <TextInput
-              placeholder="Appointment Date"
+            ) : null} */}
+            {/* <TextInput
+              placeholder="Appointment Date DD/MM/YYYY"
               onChangeText={setAppmtDate}
               value={appmtDate}
               style={styles.input}
             />
             <TextInput
-              placeholder="Appointment Time"
+              placeholder="Appointment Time: HH:MM"
               onChangeText={setAppmtTime}
               value={appmtTime}
               style={styles.input}
             />
-            <Button title="Submit Request" onPress={submitAppointmentRequest} />
-            <Button title="Cancel" onPress={() => setModalVisible(false)} />
+
+            <TextInput
+              placeholder="Custom Message"
+              onChangeText={setCustomMessage}
+              value={customMessage}
+              style={styles.input}
+            /> */}
+
+            <InputComponent
+              control={control}
+              placeholder="Appointment Date DD/MM/YYYY"
+              name="appmtDate"
+              error={errors?.appmtDate}
+              autoCapitalize="none"
+            />
+
+            <InputComponent
+              control={control}
+              placeholder="Appointment Time: HH:MM"
+              name="appmtTime"
+              error={errors?.appmtTime}
+              autoCapitalize="none"
+            />
+            <InputComponent
+              control={control}
+              placeholder="Custom Message"
+              name="customMessage"
+              error={errors?.customMessage}
+              autoCapitalize="none"
+            />
+
+            <TouchableOpacity
+              onPress={handleSubmit(submitAppointmentRequest)}
+              style={{
+                backgroundColor: "green",
+                padding: 7,
+                margin: 7,
+                borderRadius: 5,
+              }}
+            >
+              <Text style={{ color: "white" }}>Submit</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false), reset();
+              }}
+              style={{
+                backgroundColor: "red",
+                padding: 7,
+                margin: 7,
+                borderRadius: 5,
+              }}
+            >
+              <Text style={{ color: "white" }}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -193,7 +247,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "ivory",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -206,11 +260,18 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  input: {
+  searchInput: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    width: "80%",
+  },
+  input: {
+    height: 40,
+    margin: 10,
+    borderWidth: 1,
+    padding: 10,
+    width: 250,
+    backgroundColor: "white",
   },
 });

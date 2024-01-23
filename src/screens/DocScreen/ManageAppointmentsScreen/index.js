@@ -89,7 +89,7 @@ export default function ManageAppointmentsScreen(props) {
         <Text>Date: {item.appmtDate}</Text>
         <Text>Time: {item.appmtTime}</Text>
         <Text>Msg: {item.customMessage}</Text>
-        <Text>Status ID: {item.status}</Text>
+        <Text>Status: {item.status}</Text>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity

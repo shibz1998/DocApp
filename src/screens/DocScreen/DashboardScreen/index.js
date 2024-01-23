@@ -93,6 +93,7 @@ export default function DashboardScreen() {
           <FlatList
             data={appointmentData.filter((item) => item.status === "accepted")}
             keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
             horizontal
             renderItem={({ item }) => (
               <View
@@ -135,6 +136,7 @@ export default function DashboardScreen() {
           <FlatList
             data={appointmentData.filter((item) => item.status === "pending")}
             keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
             horizontal
             renderItem={({ item }) => (
               <View

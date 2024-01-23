@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     width: "100%",
+    marginVertical: 5,
   },
   appointmentInfo: {},
   buttons: {
