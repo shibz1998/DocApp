@@ -10,14 +10,13 @@ const styles = StyleSheet.create({
   },
 
   profileCard: {
-    backgroundColor: "lightblue",
-    borderWidth: 1,
-    borderRadius: 15,
+    backgroundColor: "#fde1da",
+    borderRadius: 10,
     margin: 5,
     padding: 5,
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     padding: 5,
   },

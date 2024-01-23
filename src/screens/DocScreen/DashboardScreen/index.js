@@ -41,13 +41,33 @@ export default function DashboardScreen() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.splitterDash}>
-        <Text style={styles.header}>My Profile</Text>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "#fde1da",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          My Profile
+        </Text>
         {userData && (
-          <View style={styles.profileCard}>
+          <View
+            style={{
+              backgroundColor: "#fde1da",
+
+              margin: 5,
+              padding: 5,
+            }}
+          >
             <Text>Name: {userData.name}</Text>
+            <Text>Email: {userData.email}</Text>
             <Text>Contact: {userData.contact}</Text>
             <Text>User Type: {userData.userType}</Text>
-            <Text>Email: {userData.email}</Text>
+
             <Text>Speciality: {userData.speciality}</Text>
             <Text>Location: {userData.location}</Text>
           </View>
@@ -55,7 +75,19 @@ export default function DashboardScreen() {
       </View>
 
       <View style={styles.splitterDash}>
-        <Text style={styles.header}>Upcoming Appointments</Text>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "#e4ede7",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          Upcoming Appointments
+        </Text>
 
         {appointmentData !== null && (
           <FlatList
@@ -68,17 +100,16 @@ export default function DashboardScreen() {
                   styles.profileCard,
                   {
                     backgroundColor: "#e4ede7",
-                    height: 150,
+                    height: "90%",
                     width: 200,
                     justifyContent: "center",
                     alignItems: "center",
                   },
                 ]}
               >
-                {/* <Text>{item.patientName}</Text> */}
-                <Text>{item.appmtTime}</Text>
-                <Text>{item.appmtDate}</Text>
-                <Text>{item.customMessage}</Text>
+                <Text>Time: {item.appmtTime}</Text>
+                <Text>Date: {item.appmtDate}</Text>
+                <Text>Msg: {item.customMessage}</Text>
               </View>
             )}
           />
@@ -86,7 +117,19 @@ export default function DashboardScreen() {
       </View>
 
       <View style={styles.splitterDash}>
-        <Text style={styles.header}>Pending Request</Text>
+        <Text
+          style={[
+            styles.header,
+            {
+              backgroundColor: "ivory",
+              margin: 5,
+              padding: 5,
+              paddingVertical: 10,
+            },
+          ]}
+        >
+          Pending Request
+        </Text>
 
         {appointmentData !== null && (
           <FlatList
@@ -99,16 +142,16 @@ export default function DashboardScreen() {
                   styles.profileCard,
                   {
                     backgroundColor: "ivory",
-                    height: 150,
                     width: 200,
+                    height: "90%",
                     justifyContent: "center",
                     alignItems: "center",
                   },
                 ]}
               >
-                <Text>{item.appmtTime}</Text>
-                <Text>{item.appmtDate}</Text>
-                <Text>{item.customMessage}</Text>
+                <Text>Time: {item.appmtTime}</Text>
+                <Text>Date: {item.appmtDate}</Text>
+                <Text>Msg: {item.customMessage}</Text>
               </View>
             )}
           />
