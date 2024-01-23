@@ -62,8 +62,11 @@ export default function UpcomingAppointmentsScreen(props) {
         <Text>Status: {item.status}</Text>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => ViewPatientDetails(item.patientId)}>
-          <Text style={{ color: "green" }}>View Patient Details</Text>
+        <TouchableOpacity
+          style={styles.viewButton}
+          onPress={() => ViewPatientDetails(item.patientId)}
+        >
+          <Text style={{ color: "white" }}>View Patient Details</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -150,5 +153,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  viewButton: {
+    backgroundColor: "green",
+    padding: 5,
+    borderRadius: 5,
   },
 });
