@@ -83,7 +83,9 @@ const Experience = () => {
   const renderExperience = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        <Text style={styles.contentText}>Clinic: {item.clinic}</Text>
+        <Text style={styles.contentText}>
+          Clinic: <Text>{item.clinic}</Text>
+        </Text>
         <Text style={styles.contentText}>Start Year: {item.startYear}</Text>
         <Text style={styles.contentText}>End Year: {item.endYear}</Text>
         <Text style={styles.contentText}>Description: {item.description}</Text>
@@ -148,12 +150,14 @@ const Experience = () => {
           style={styles.addButton}
           onPress={openExperienceModal}
         >
-          <Text>Add Experience</Text>
+          <Text>+ Add Experience</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
+        style={{ marginVertical: 5 }}
         data={experiences}
+        showsVerticalScrollIndicator={false}
         renderItem={renderExperience}
         keyExtractor={(item, index) => `qual-${index}`}
       />
@@ -165,7 +169,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
+    backgroundColor: "#8fd7c7",
+    margin: 5,
     padding: 10,
+    borderRadius: 5,
   },
   headerSection: {
     flexDirection: "row",

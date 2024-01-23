@@ -3,9 +3,8 @@ import { useFirestore } from "../../../hooks/useFirestore";
 import { useUserContext } from "../../../UserContext";
 import styles from "../DocStyles";
 import { Text, View, FlatList } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function DashboardScreen(props) {
+export default function DashboardScreen() {
   console.log("Doctor Dashboard Running");
 
   const { getDocument } = useFirestore();
@@ -39,12 +38,9 @@ export default function DashboardScreen(props) {
     console.log(appointmentData);
     return () => unsubscribe();
   }, []);
-
-  const section2Data = [{ id: "4", title: "Card 4" }];
-
   return (
     <View style={{ flex: 1 }}>
-      <View>
+      <View style={styles.splitterDash}>
         <Text style={styles.header}>My Profile</Text>
         {userData && (
           <View style={styles.profileCard}>
@@ -58,59 +54,65 @@ export default function DashboardScreen(props) {
         )}
       </View>
 
-      <View>
+      <View style={styles.splitterDash}>
         <Text style={styles.header}>Upcoming Appointments</Text>
-        <FlatList
-          data={appointmentData.filter((item) => item.status === "accepted")}
-          keyExtractor={(item) => item.id}
-          horizontal
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.profileCard,
-                {
-                  backgroundColor: "lightgreen",
-                  height: 150,
-                  width: 200,
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              {/* <Text>{item.patientName}</Text> */}
-              <Text>{item.appmtTime}</Text>
-              <Text>{item.appmtDate}</Text>
-              <Text>{item.customMessage}</Text>
-            </View>
-          )}
-        />
+
+        {appointmentData !== null && (
+          <FlatList
+            data={appointmentData.filter((item) => item.status === "accepted")}
+            keyExtractor={(item) => item.id}
+            horizontal
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.profileCard,
+                  {
+                    backgroundColor: "#e4ede7",
+                    height: 150,
+                    width: 200,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                {/* <Text>{item.patientName}</Text> */}
+                <Text>{item.appmtTime}</Text>
+                <Text>{item.appmtDate}</Text>
+                <Text>{item.customMessage}</Text>
+              </View>
+            )}
+          />
+        )}
       </View>
 
-      <View>
+      <View style={styles.splitterDash}>
         <Text style={styles.header}>Pending Request</Text>
-        <FlatList
-          data={appointmentData.filter((item) => item.status === "pending")}
-          keyExtractor={(item) => item.id}
-          horizontal
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.profileCard,
-                {
-                  backgroundColor: "ivory",
-                  height: 150,
-                  width: 200,
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              <Text>{item.appmtTime}</Text>
-              <Text>{item.appmtDate}</Text>
-              <Text>{item.customMessage}</Text>
-            </View>
-          )}
-        />
+
+        {appointmentData !== null && (
+          <FlatList
+            data={appointmentData.filter((item) => item.status === "pending")}
+            keyExtractor={(item) => item.id}
+            horizontal
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.profileCard,
+                  {
+                    backgroundColor: "ivory",
+                    height: 150,
+                    width: 200,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <Text>{item.appmtTime}</Text>
+                <Text>{item.appmtDate}</Text>
+                <Text>{item.customMessage}</Text>
+              </View>
+            )}
+          />
+        )}
       </View>
     </View>
   );

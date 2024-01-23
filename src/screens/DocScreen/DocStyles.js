@@ -6,12 +6,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 5,
   },
 
   profileCard: {
     backgroundColor: "lightblue",
-    borderWidth: 2,
-    borderRadius: 5,
+    borderWidth: 1,
+    borderRadius: 15,
     margin: 5,
     padding: 5,
   },
@@ -19,6 +20,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: 5,
+  },
+
+  splitterDash: {
+    flex: 1,
+    backgroundColor: "lightgrey",
+    margin: 5,
   },
 });
 

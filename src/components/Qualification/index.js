@@ -143,12 +143,14 @@ const Qualification = () => {
           style={styles.addButton}
           onPress={openQualificationModal}
         >
-          <Text>Add Qualification</Text>
+          <Text> + Add Qualification</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
+        style={{ marginVertical: 5 }}
         data={qualifications}
+        showsVerticalScrollIndicator={false}
         renderItem={renderQualification}
         keyExtractor={(item, index) => `qual-${index}`}
       />
@@ -160,7 +162,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
+    backgroundColor: "#8fcde2",
+    margin: 5,
     padding: 10,
+    borderRadius: 5,
   },
   headerSection: {
     flexDirection: "row",
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   addButton: {
-    backgroundColor: "lightblue",
+    backgroundColor: "lightgreen",
     padding: 5,
     borderRadius: 5,
     marginRight: 5,
