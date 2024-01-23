@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -7,6 +7,8 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../UserContext";
 import styles from "../../styles/AuthStyles";
@@ -19,12 +21,49 @@ export default function SignUp(props) {
   const { signUp } = useFirebaseAuth();
   const { addDocument } = useFirestore();
   const [userType, setUserType] = useState("patient");
+
+  console.log(userType);
+
+  const createValidationSchema = (userType) => {
+    return Yup.object().shape({
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      password: Yup.string()
+        .min(6, "Minimum 6 characters")
+        .required("Password is required"),
+      name: Yup.string().required("Name is required"),
+      contact: Yup.string()
+        .matches(/^[0-9]+$/, "Contact number must be only digits")
+        .length(11, "Must be exactly 11 digits")
+        .required("Contact number is required"),
+      speciality:
+        userType === "doctor"
+          ? Yup.string().required("Speciality is required")
+          : Yup.string().notRequired(),
+      location:
+        userType === "doctor"
+          ? Yup.string().required("Location is required")
+          : Yup.string().notRequired(),
+    });
+  };
+
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(createValidationSchema(userType)),
+  });
+
+  // Update the schema whenever userType changes
+  useEffect(() => {
+    reset(
+      {},
+      {
+        keepValues: false, // or true, depending on how you want to handle form values
+      }
+    );
+  }, [userType, reset]);
 
   const onSubmit = async (data) => {
     const { email, password, name, contact, location, speciality } = data;
@@ -120,7 +159,7 @@ export default function SignUp(props) {
 
         <InputComponent
           control={control}
-          placeholder={"Contact Number"}
+          placeholder={"Phone Number"}
           name="contact"
           error={errors?.contact}
           autoCapitalize="none"
