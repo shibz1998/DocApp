@@ -36,47 +36,61 @@ export default function MyAppointmentsScreen(props) {
       console.error("Error during removing:", error);
     }
   };
+  const renderAppointmentData = ({ item }) => {
+    let cardBackgroundColor = "lightgray";
 
-  const renderAppointmentData = ({ item }) => (
-    <View style={styles.card}>
-      <View style={styles.cardContent}>
-        <Text style={styles.cardText}>Status: {item.status}</Text>
-        <Text style={styles.cardText}>Date: {item.appmtDate}</Text>
-        <Text style={styles.cardText}>Time: {item.appmtTime}</Text>
-        <Text style={styles.cardText}>Message: {item.customMessage}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            props.navigation.navigate("PatientAppointmentDetailedScreen", {
-              doctorId: item.doctorId,
-              appointmentData: item,
-            });
-          }}
-        >
-          <Text>View</Text>
-        </TouchableOpacity>
+    if (item.status === "accepted") {
+      cardBackgroundColor = "lightgreen";
+    } else if (item.status === "pending") {
+      cardBackgroundColor = "lightyellow";
+    } else if (item.status === "rejected") {
+      cardBackgroundColor = "coral";
+    }
+    return (
+      <View style={[styles.card, { backgroundColor: cardBackgroundColor }]}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardText}>Doctor Name: {item.doctorName}</Text>
+          <Text style={styles.cardText}>Status: {item.status}</Text>
+          <Text style={styles.cardText}>Date: {item.appmtDate}</Text>
+          <Text style={styles.cardText}>Time: {item.appmtTime}</Text>
+          <Text style={styles.cardText}>Message: {item.customMessage}</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              props.navigation.navigate("PatientAppointmentDetailedScreen", {
+                doctorId: item.doctorId,
+                appointmentData: item,
+              });
+            }}
+          >
+            <Text>View</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            removeAppointment(item.id);
-          }}
-        >
-          <Text>Delete</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "red" }]}
+            onPress={() => {
+              removeAppointment(item.id);
+            }}
+          >
+            <Text style={{ color: "white" }}>Delete</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={appointmentData}
-        renderItem={renderAppointmentData}
-        keyExtractor={(item) => item.id}
-      />
+      <View style={{ margin: 5 }}>
+        <FlatList
+          data={appointmentData}
+          renderItem={renderAppointmentData}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 }
@@ -108,7 +122,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    marginBottom: 10,
-    backgroundColor: "skyblue", // This adds space below each button
+    padding: 5,
+    margin: 5,
+    backgroundColor: "skyblue",
+    borderRadius: 5,
   },
 });

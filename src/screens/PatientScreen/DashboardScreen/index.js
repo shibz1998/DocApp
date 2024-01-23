@@ -135,6 +135,7 @@ export default function DashboardScreen(props) {
           <FlatList
             data={appointmentData.filter((item) => item.status === "pending")}
             keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
             horizontal
             renderItem={({ item }) => (
               <View
