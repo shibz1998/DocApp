@@ -109,10 +109,16 @@ export default function BookAppointmentScreen(props) {
         <Text>Email: {item.email}</Text>
       </View>
       <View style={{ justifyContent: "center" }}>
-        <TouchableOpacity onPress={() => handleRequestAppointment(item)}>
+        <TouchableOpacity
+          style={{ margin: 5 }}
+          onPress={() => handleRequestAppointment(item)}
+        >
           <Text style={{ color: "blue" }}>Request Appointment</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => viewDoctorDetails(item)}>
+        <TouchableOpacity
+          style={{ margin: 5 }}
+          onPress={() => viewDoctorDetails(item)}
+        >
           <Text style={{ color: "blue" }}>View Doctor Details</Text>
         </TouchableOpacity>
       </View>
@@ -147,29 +153,6 @@ export default function BookAppointmentScreen(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {/* {selectedDoctor && selectedDoctor.name ? (
-              <TextInput value={selectedDoctor.name} style={styles.input} />
-            ) : null} */}
-            {/* <TextInput
-              placeholder="Appointment Date DD/MM/YYYY"
-              onChangeText={setAppmtDate}
-              value={appmtDate}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Appointment Time: HH:MM"
-              onChangeText={setAppmtTime}
-              value={appmtTime}
-              style={styles.input}
-            />
-
-            <TextInput
-              placeholder="Custom Message"
-              onChangeText={setCustomMessage}
-              value={customMessage}
-              style={styles.input}
-            /> */}
-
             <InputComponent
               control={control}
               placeholder="Appointment Date DD/MM/YYYY"

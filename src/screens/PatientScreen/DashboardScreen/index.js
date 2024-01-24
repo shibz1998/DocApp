@@ -108,8 +108,9 @@ export default function DashboardScreen(props) {
                   },
                 ]}
               >
-                <Text>Time: {item.appmtTime}</Text>
+                <Text>Doctor: {item.doctorName}</Text>
                 <Text>Date: {item.appmtDate}</Text>
+                <Text>Time: {item.appmtTime}</Text>
                 <Text>Msg: {item.customMessage}</Text>
               </View>
             )}
@@ -151,6 +152,7 @@ export default function DashboardScreen(props) {
                   },
                 ]}
               >
+                <Text>Doctor: {item.doctorName}</Text>
                 <Text>Time: {item.appmtTime}</Text>
                 <Text>Date: {item.appmtDate}</Text>
                 <Text>Msg: {item.customMessage}</Text>

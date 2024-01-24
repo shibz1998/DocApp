@@ -1,4 +1,3 @@
-// DoctorDetailsScreen.js
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useFirestore } from "../../../hooks/useFirestore";
