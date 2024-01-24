@@ -35,6 +35,7 @@ export default function Login(props) {
       console.error("Login Error: ", error.message);
       Alert.alert("Error", "Invalid email or password. Please try again.");
     }
+    reset();
   };
 
   return (
@@ -72,7 +73,12 @@ export default function Login(props) {
           <Text style={styles.buttonTextColor}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>{"Not created an account yet?"}</Text>
-        <TouchableOpacity onPress={() => props.navigation.navigate("SignUp")}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("SignUp");
+            reset();
+          }}
+        >
           <Text style={styles.linkText}> {"Register"}</Text>
         </TouchableOpacity>
       </View>

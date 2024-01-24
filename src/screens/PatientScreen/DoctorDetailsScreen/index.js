@@ -64,7 +64,7 @@ const DoctorDetailsScreen = ({ route }) => {
           <Text style={styles.header}>Experiences:</Text>
           {experiences.map((exp, index) => (
             <Text key={index} style={styles.detailText}>
-              {`${exp.clinic}, ${exp.startYear}-${exp.endYear}`}
+              {`${exp.clinic}, ${exp.startYear}-${exp.endYear}, ${exp.description}`}
             </Text>
           ))}
         </View>

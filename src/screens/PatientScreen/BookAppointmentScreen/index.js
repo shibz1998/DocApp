@@ -93,6 +93,7 @@ export default function BookAppointmentScreen(props) {
 
     setModalVisible(false);
     Alert.alert("Successfully Submitted");
+    reset();
   };
 
   const renderDoctor = ({ item }) => (
