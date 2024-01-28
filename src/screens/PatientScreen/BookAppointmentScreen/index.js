@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { format } from "date-fns";
 import {
   StyleSheet,
   Text,
@@ -16,16 +18,17 @@ import { useForm } from "react-hook-form";
 
 export default function BookAppointmentScreen(props) {
   const { userID } = useUserContext();
-
   const { listenToDoctorProfiles, addDocument } = useFirestore();
-
   const [doctors, setDoctors] = useState([]);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDoctors, setFilteredDoctors] = useState([]);
+
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const {
     control,
@@ -42,7 +45,6 @@ export default function BookAppointmentScreen(props) {
       },
       (error) => console.error("Error listening to doctor profiles:", error)
     );
-    console.log(doctors);
     return () => unsubscribe();
   }, []);
 
@@ -61,6 +63,18 @@ export default function BookAppointmentScreen(props) {
     setModalVisible(true);
   };
 
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const onTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShowTimePicker(Platform.OS === "ios");
+    setTime(currentTime);
+  };
+
   const viewDoctorDetails = (doctor) => {
     setSelectedDoctor(doctor);
     console.log("-------------------------");
@@ -72,27 +86,40 @@ export default function BookAppointmentScreen(props) {
   };
 
   const submitAppointmentRequest = async (data) => {
-    const { appmtDate, appmtTime, customMessage } = data;
+    const { customMessage } = data;
+    const formattedDate = format(date, "EEEE dd/MM/yyyy");
+    const formattedTime = format(time, "HH:mm");
 
-    const appointmentData = {
-      doctorId: selectedDoctor.userId,
-      patientId: userID,
-      doctorName: selectedDoctor.name,
-      customMessage: customMessage,
-      appmtDate: appmtDate,
-      appmtTime: appmtTime,
-      status: "pending",
-    };
-    console.log("Submitting appointment request:", appointmentData);
-    try {
-      await addDocument("Appointment", appointmentData);
-      console.log("Appointment request submitted successfully");
-    } catch (error) {
-      console.error("Error submitting appointment request:", error);
+    const currentDate = new Date();
+    const selectedDateTime = new Date(
+      date.setHours(time.getHours(), time.getMinutes(), 0, 0)
+    );
+
+    if (selectedDateTime >= currentDate) {
+      const appointmentData = {
+        doctorId: selectedDoctor.userId,
+        patientId: userID,
+        doctorName: selectedDoctor.name,
+        customMessage: customMessage,
+        appmtDate: formattedDate,
+        appmtTime: formattedTime,
+        status: "pending",
+      };
+      console.log("Submitting appointment request:", appointmentData);
+
+      try {
+        await addDocument("Appointment", appointmentData);
+        console.log("Appointment request submitted successfully");
+        Alert.alert("Successfully Submitted");
+      } catch (error) {
+        console.error("Error submitting appointment request:", error);
+        Alert.alert("Error", "Failed to submit appointment request");
+      }
+    } else {
+      Alert.alert("Error", "Appointment date and time must be in the future");
     }
 
     setModalVisible(false);
-    Alert.alert("Successfully Submitted");
     reset();
   };
 
@@ -156,26 +183,37 @@ export default function BookAppointmentScreen(props) {
           <View style={styles.modalView}>
             <InputComponent
               control={control}
-              placeholder="Appointment Date DD/MM/YYYY"
-              name="appmtDate"
-              error={errors?.appmtDate}
-              autoCapitalize="none"
-            />
-
-            <InputComponent
-              control={control}
-              placeholder="Appointment Time: HH:MM"
-              name="appmtTime"
-              error={errors?.appmtTime}
-              autoCapitalize="none"
-            />
-            <InputComponent
-              control={control}
               placeholder="Custom Message"
               name="customMessage"
               error={errors?.customMessage}
               autoCapitalize="none"
             />
+
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <Text>Select Date</Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={onDateChange}
+              />
+            )}
+
+            <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+              <Text>Select Time</Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                value={time}
+                mode="time"
+                is24Hour={true}
+                display="default"
+                onChange={onTimeChange}
+              />
+            )}
 
             <TouchableOpacity
               onPress={handleSubmit(submitAppointmentRequest)}
