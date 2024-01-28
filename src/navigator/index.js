@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useUserContext } from "../UserContext";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Login,
   SignUp,
@@ -40,28 +41,53 @@ const DocBottomDrawer = () => {
       <Tab.Screen
         name="DocDashboardScreen"
         component={DocDashboardScreen}
-        options={{ title: "Dashboard" }}
+        options={{
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="dashboard" size={size} color={color} />
+          ),
+        }}
       />
 
       <Tab.Screen
         name="DocUpcomingAppointmentsScreen"
         component={DocUpcomingAppointmentsScreen}
-        options={{ title: "Upcoming Appointments" }}
+        options={{
+          title: "Upcoming",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="event" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="DocManageAppointmentsScreen"
         component={DocManageAppointmentsScreen}
-        options={{ title: "Manage Appointments" }}
+        options={{
+          title: "Manage",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="edit" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="DocMyProfileScreen"
         component={DocMyProfileScreen}
-        options={{ title: "My Profile" }}
+        options={{
+          title: "My Profile",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Logout"
         component={LogoutComponent}
-        options={{ title: "Logout" }}
+        options={{
+          title: "Logout",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="exit-to-app" size={size} color={color} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
@@ -73,35 +99,51 @@ const PatientBottomDrawer = () => {
       <Tab.Screen
         name="PatientDashboardScreen"
         component={PatientDashboardScreen}
-        options={{ title: "Dashboard" }}
+        options={{
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="dashboard" size={size} color={color} />
+          ),
+        }}
       />
-      {/* <Tab.Screen
-        name="PatientBookAppointmentScreen"
-        component={PatientBookAppointmentScreen}
-        options={{ title: "Book Appointment" }}
-      /> */}
+
       <Tab.Screen
         name="BookAppointment"
         component={PatientDetailsStack}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Book Appointment",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="add-circle-outline"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
       />
 
       <Tab.Screen
         name="Manage Appointment"
         component={PatientAppointmentDetailsStack}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Manage",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="edit" size={size} color={color} />
+          ),
+        }}
       />
-
-      {/* <Tab.Screen
-        name="PatientMyAppointsmentsScreen"
-        component={PatientMyAppointsmentsScreen}
-        options={{ title: "Manage Appointments" }}
-      /> */}
 
       <Tab.Screen
         name="Logout"
         component={LogoutComponent}
-        options={{ title: "Logout" }}
+        options={{
+          title: "Logout",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="exit-to-app" size={size} color={color} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
