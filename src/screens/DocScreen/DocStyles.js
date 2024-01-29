@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
   splitterDash: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "white",
     margin: 5,
   },
 });
