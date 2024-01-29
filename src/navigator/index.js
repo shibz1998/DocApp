@@ -219,7 +219,8 @@ export default function Navigator() {
   } else if (userType === "patient") {
     return <PatientBottomDrawer />;
   } else {
-    return <AuthStack />;
+    // return <AuthStack />;
+    return null;
   }
 
   // return isUserLoggedIn && userType === "doctor"
