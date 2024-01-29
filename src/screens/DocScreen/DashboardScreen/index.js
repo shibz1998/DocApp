@@ -39,13 +39,13 @@ export default function DashboardScreen() {
     return () => unsubscribe();
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.splitterDash}>
         <Text
           style={[
             styles.header,
             {
-              backgroundColor: "#8fd7c7",
+              backgroundColor: "#5adbb5",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -58,7 +58,7 @@ export default function DashboardScreen() {
           <View
             style={{
               backgroundColor: "#8fd7c7",
-
+              justifyContent: "center",
               margin: 5,
               padding: 5,
             }}
@@ -79,7 +79,7 @@ export default function DashboardScreen() {
           style={[
             styles.header,
             {
-              backgroundColor: "#8fcde2",
+              backgroundColor: "#55c2da",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -104,7 +104,7 @@ export default function DashboardScreen() {
                     height: "90%",
                     width: 200,
                     justifyContent: "center",
-                    alignItems: "center",
+                    paddingHorizontal: 5,
                   },
                 ]}
               >
@@ -122,7 +122,7 @@ export default function DashboardScreen() {
           style={[
             styles.header,
             {
-              backgroundColor: "lightyellow",
+              backgroundColor: "yellow",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -143,11 +143,12 @@ export default function DashboardScreen() {
                 style={[
                   styles.profileCard,
                   {
-                    backgroundColor: "lightyellow",
+                    backgroundColor: "#fffd8d",
                     width: 200,
                     height: "90%",
                     justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingHorizontal: 10,
                   },
                 ]}
               >

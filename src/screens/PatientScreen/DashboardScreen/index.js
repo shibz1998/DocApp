@@ -104,6 +104,7 @@ export default function DashboardScreen(props) {
                     height: "90%",
                     width: 200,
                     justifyContent: "center",
+                    paddingHorizontal: 5,
                   },
                 ]}
               >
