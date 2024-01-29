@@ -3,9 +3,8 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // backgroundColor: "#fff",
+    backgroundColor: "black",
   },
 
   profileCard: {
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
 
   splitterDash: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "white",
     margin: 5,
   },
 });

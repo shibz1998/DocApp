@@ -41,13 +41,13 @@ export default function DashboardScreen(props) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={[styles.splitterDash, { flex: 0.8 }]}>
         <Text
           style={[
             styles.header,
             {
-              backgroundColor: "#8fd7c7",
+              backgroundColor: "#5adbb5",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -79,7 +79,7 @@ export default function DashboardScreen(props) {
           style={[
             styles.header,
             {
-              backgroundColor: "#8fcde2",
+              backgroundColor: "#55c2da",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -104,7 +104,6 @@ export default function DashboardScreen(props) {
                     height: "90%",
                     width: 200,
                     justifyContent: "center",
-                    alignItems: "center",
                   },
                 ]}
               >
@@ -123,7 +122,7 @@ export default function DashboardScreen(props) {
           style={[
             styles.header,
             {
-              backgroundColor: "lightyellow",
+              backgroundColor: "yellow",
               margin: 5,
               padding: 5,
               paddingVertical: 10,
@@ -144,11 +143,11 @@ export default function DashboardScreen(props) {
                 style={[
                   styles.profileCard,
                   {
-                    backgroundColor: "lightyellow",
+                    backgroundColor: "#fffd8d",
                     width: 200,
                     height: "90%",
                     justifyContent: "center",
-                    alignItems: "center",
+                    paddingHorizontal: 10,
                   },
                 ]}
               >
