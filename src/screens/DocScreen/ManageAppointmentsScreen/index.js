@@ -1,45 +1,3 @@
-// import { StyleSheet, Text, View, Button } from "react-native";
-
-// import React, { useState, useEffect } from "react";
-// import { useFirestore } from "../../../hooks/useFirestore";
-// import { useUserContext } from "../../../UserContext";
-// export default function ManageAppointmentsScreen(props) {
-//   console.log("Manage Appointment Running");
-//   const { userID } = useUserContext();
-//   const { getDocument } = useFirestore();
-//   const [appointmentData, setAppointmentData] = useState(null);
-
-//   useEffect(() => {
-//     const collectionName = "Appointment";
-//     const filterField = "doctorId";
-//     const unsubscribe = getDocument(
-//       collectionName,
-//       filterField,
-//       userID,
-//       (docs) => setAppointmentData(docs),
-//       (error) => setError(error)
-//     );
-
-//     console.log(appointmentData);
-//     return () => unsubscribe();
-//   }, []);
-
-//   return (
-//     <View style={styles.container}>
-//       <Text>Manage Appointsment</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
-
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -144,7 +102,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#8fcde2",
+    // backgroundColor: "#8fcde2",
+    backgroundColor: "#55c2da",
     borderRadius: 10,
     padding: 15,
     marginVertical: 5,

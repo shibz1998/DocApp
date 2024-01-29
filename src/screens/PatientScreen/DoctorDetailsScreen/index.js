@@ -47,7 +47,9 @@ const DoctorDetailsScreen = ({ route }) => {
   return (
     <ScrollView style={styles.container}>
       {hasQualifications ? (
-        <View style={styles.section}>
+        <View
+          style={[styles.section, { backgroundColor: "#8fcde2", padding: 5 }]}
+        >
           <Text style={styles.header}>Qualifications:</Text>
           {qualifications.map((qual, index) => (
             <Text key={index} style={styles.detailText}>
@@ -56,11 +58,17 @@ const DoctorDetailsScreen = ({ route }) => {
           ))}
         </View>
       ) : (
-        <Text style={styles.noDataText}>No Qualifications Available</Text>
+        <View
+          style={[styles.section, { backgroundColor: "#8fcde2", padding: 5 }]}
+        >
+          <Text style={styles.noDataText}>No Qualifications Available</Text>
+        </View>
       )}
 
       {hasExperiences ? (
-        <View style={styles.section}>
+        <View
+          style={[styles.section, { backgroundColor: "#8fd7c7", padding: 5 }]}
+        >
           <Text style={styles.header}>Experiences:</Text>
           {experiences.map((exp, index) => (
             <Text key={index} style={styles.detailText}>
@@ -69,7 +77,11 @@ const DoctorDetailsScreen = ({ route }) => {
           ))}
         </View>
       ) : (
-        <Text style={styles.noDataText}>No Experiences Available</Text>
+        <View
+          style={[styles.section, { backgroundColor: "#8fd7c7", padding: 5 }]}
+        >
+          <Text style={styles.noDataText}>No Experiences Available</Text>
+        </View>
       )}
     </ScrollView>
   );

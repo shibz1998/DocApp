@@ -41,7 +41,7 @@ const AppointmentDetailedScreen = ({ route }) => {
         ))}
       </View>
 
-      <View style={styles.section}>
+      <View style={[styles.section, { backgroundColor: "#8fd7c7" }]}>
         <Text style={styles.header}>Appointment Details:</Text>
         <View style={styles.detailView}>
           <Text style={styles.detailTitle}>Status:</Text>
@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 20,
+    backgroundColor: "#8fcde2",
+    padding: 5,
+    borderRadius: 5,
   },
   header: {
     fontSize: 20,
@@ -80,13 +83,13 @@ const styles = StyleSheet.create({
   },
   detailTitle: {
     fontWeight: "bold",
-    color: "#333",
+    color: "black",
     fontSize: 16,
   },
   detailText: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#666",
+    color: "black",
   },
   noDataText: {
     fontSize: 16,

@@ -49,6 +49,7 @@ export default function BookAppointmentScreen(props) {
   }, []);
 
   useEffect(() => {
+    console.log("search rendering");
     const filtered = doctors.filter(
       (doctor) =>
         doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,9 +78,6 @@ export default function BookAppointmentScreen(props) {
 
   const viewDoctorDetails = (doctor) => {
     setSelectedDoctor(doctor);
-    console.log("-------------------------");
-    console.log(doctor.userId);
-
     props.navigation.navigate("PatientDoctorDetailsScreen", {
       doctorId: doctor.userId,
     });
@@ -136,13 +134,15 @@ export default function BookAppointmentScreen(props) {
         <Text>Speciality: {item.speciality}</Text>
         <Text>Email: {item.email}</Text>
       </View>
-      <View style={{ justifyContent: "center" }}>
+
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity
-          style={{ margin: 5 }}
+          style={styles.button}
           onPress={() => handleRequestAppointment(item)}
         >
           <Text style={{ color: "blue" }}>Request Appointment</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{ margin: 5 }}
           onPress={() => viewDoctorDetails(item)}
@@ -155,14 +155,13 @@ export default function BookAppointmentScreen(props) {
 
   return (
     <View style={styles.container}>
+      <TextInput
+        placeholder="Search by name, location or speciality"
+        style={styles.searchInput}
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+      />
       <View style={{ flex: 1 }}>
-        <TextInput
-          placeholder="Search for doctors"
-          style={styles.searchInput}
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-
         <FlatList
           data={filteredDoctors}
           renderItem={renderDoctor}
@@ -181,48 +180,72 @@ export default function BookAppointmentScreen(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text
+              style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20 }}
+            >
+              Request Appointment Form
+            </Text>
+
             <InputComponent
               control={control}
               placeholder="Custom Message"
               name="customMessage"
               error={errors?.customMessage}
               autoCapitalize="none"
+              style={{ borderWidth: 1 }}
             />
 
-            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-              <Text>Select Date</Text>
-            </TouchableOpacity>
-            {showDatePicker && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={onDateChange}
-              />
-            )}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={[styles.formButton, { backgroundColor: "lightgrey" }]}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text>Select Date</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onDateChange}
+                />
+              )}
+            </View>
 
-            <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-              <Text>Select Time</Text>
-            </TouchableOpacity>
-            {showTimePicker && (
-              <DateTimePicker
-                value={time}
-                mode="time"
-                is24Hour={true}
-                display="default"
-                onChange={onTimeChange}
-              />
-            )}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={[styles.formButton, { backgroundColor: "lightgrey" }]}
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Text>Select Time</Text>
+              </TouchableOpacity>
+              {showTimePicker && (
+                <DateTimePicker
+                  value={time}
+                  mode="time"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onTimeChange}
+                />
+              )}
+            </View>
 
             <TouchableOpacity
               onPress={handleSubmit(submitAppointmentRequest)}
-              style={{
-                backgroundColor: "green",
-                padding: 7,
-                margin: 7,
-                borderRadius: 5,
-              }}
+              style={styles.formButton}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
@@ -231,12 +254,7 @@ export default function BookAppointmentScreen(props) {
               onPress={() => {
                 setModalVisible(false), reset();
               }}
-              style={{
-                backgroundColor: "red",
-                padding: 7,
-                margin: 7,
-                borderRadius: 5,
-              }}
+              style={[styles.formButton, { backgroundColor: "red" }]}
             >
               <Text style={{ color: "white" }}>Cancel</Text>
             </TouchableOpacity>
@@ -260,6 +278,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
+    backgroundColor: "#55c2da",
   },
   centeredView: {
     flex: 1,
@@ -283,10 +302,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   searchInput: {
+    backgroundColor: "white",
+    width: "88%",
     height: 40,
-    margin: 12,
+    margin: 10,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 5,
   },
   input: {
     height: 40,
@@ -295,5 +317,19 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 250,
     backgroundColor: "white",
+  },
+
+  button: {
+    backgroundColor: "white",
+    padding: 8,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+
+  formButton: {
+    backgroundColor: "green",
+    padding: 7,
+    margin: 7,
+    borderRadius: 5,
   },
 });
